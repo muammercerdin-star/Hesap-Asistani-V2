@@ -1,0 +1,41 @@
+# Termux / sistem
+*.log
+server.log
+nohup.out
+
+# Veritabanı
+*.db
+*.sqlite
+*.sqlite3
+
+# Yedekler
+*.bak
+*.bak_*
+*.backup
+backups/
+
+# Rapor / audit / geçici araçlar
+RAPOR_*.md
+tools_audit_*.py
+tools_list_*.py
+
+# Eski deneme dosyaları
+hesap_v1.html
+hesap_v1.html.bak_*
+hesap_v2.html.bak_*
+
+# Flask / eski backend denemeleri
+app.py
+app.py.bak_*
+modules/
+static/
+templates/
+tools/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Geçici dosyalar
+.tmp/
+temp/
