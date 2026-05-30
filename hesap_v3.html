@@ -706,187 +706,8 @@ function pusulaText(){
 function copyPusulaText(){copyText(pusulaText());toast("✅ KOPYALANDI","Pusula metni panoya alındı","in")}
 function sendPusulaWhatsApp(){window.open("https://wa.me/?text="+encodeURIComponent(pusulaText()),"_blank")}
 function pusulaFullHtml(){return`<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hesap Pusulası</title><style>${document.querySelector("style").textContent}.app,.top,.kasa,.nav,.pusula-actions,.hero{display:none!important}body{overflow:auto;background:#ece7d7;padding:8px}</style></head><body>${buildPusulaHtml()}
-<!-- START_V3_SETUP_AUTO_FIX -->
-<style id="v3-setup-auto-fix-style">
-/* APK WebView status bar binmesini azalt */
-.setup{
-  padding-top:calc(42px + env(safe-area-inset-top, 0px)) !important;
-}
 
-/* Android WebView date/time/select yazıları görünür kalsın */
-.field input,
-.field select,
-input[type="date"],
-input[type="time"]{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
 
-.field select option{
-  background:#111827 !important;
-  color:#ffffff !important;
-}
-</style>
-
-<script id="v3-setup-auto-fix-js">
-(function(){
-  var DEF = {
-    trip: "Denizli → İstanbul (Vardön)",
-    plate: "45 KH 999",
-    staff: {
-      "Muavin": "Muammer Çerdin",
-      "1. Şoför": "Recep Furan",
-      "2. Şoför": "Mehmet Seyhan"
-    },
-    routes: [
-      "Antalya → İstanbul",
-      "İstanbul → Antalya",
-      "Denizli → İstanbul",
-      "İstanbul → Denizli",
-      "Denizli → İstanbul (Vardön)",
-      "İstanbul → Denizli (Vardön)",
-      "Denizli → İzmir",
-      "İzmir → Denizli"
-    ]
-  };
-
-  function q(id){
-    return document.getElementById(id);
-  }
-
-  function todayLocal(){
-    var d = new Date();
-    var y = d.getFullYear();
-    var m = String(d.getMonth() + 1).padStart(2, "0");
-    var day = String(d.getDate()).padStart(2, "0");
-    return y + "-" + m + "-" + day;
-  }
-
-  function timeLocal(){
-    var d = new Date();
-    return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
-  }
-
-  function opt(select, value){
-    var o = document.createElement("option");
-    o.value = value;
-    o.textContent = value;
-    select.appendChild(o);
-  }
-
-  function ensureRoute(){
-    var s = q("setupRoute");
-    if(!s) return;
-
-    if(!s.options || s.options.length < 2){
-      s.innerHTML = "";
-      DEF.routes.forEach(function(r){ opt(s, r); });
-
-      var add = document.createElement("option");
-      add.value = "__custom_route_add__";
-      add.textContent = "+ Yeni hat ekle";
-      s.appendChild(add);
-    }
-
-    var wanted = DEF.trip;
-
-    try{
-      if(typeof state !== "undefined" && state && state.trip){
-        wanted = state.trip;
-      }
-    }catch(e){}
-
-    var exists = Array.from(s.options).some(function(o){ return o.value === wanted; });
-    if(!exists){
-      opt(s, wanted);
-    }
-
-    if(!s.value || s.value === "__custom_route_add__"){
-      s.value = wanted;
-    }
-
-    if(!s.value){
-      s.value = DEF.trip;
-    }
-  }
-
-  function normalizeState(){
-    try{
-      if(typeof state === "undefined" || !state) return;
-
-      state.trip = state.trip || DEF.trip;
-      state.date = state.date || todayLocal();
-      state.time = state.time || timeLocal();
-      state.plate = state.plate || DEF.plate;
-
-      state.staff = state.staff || {};
-      state.staff["Muavin"] = state.staff["Muavin"] || DEF.staff["Muavin"];
-      state.staff["1. Şoför"] = state.staff["1. Şoför"] || DEF.staff["1. Şoför"];
-      state.staff["2. Şoför"] = state.staff["2. Şoför"] || DEF.staff["2. Şoför"];
-
-      if(typeof saveState === "function"){
-        saveState();
-      }
-    }catch(e){}
-  }
-
-  function ensureSetupDefaults(){
-    normalizeState();
-    ensureRoute();
-
-    var date = q("setupDate");
-    var time = q("setupTime");
-    var plate = q("setupPlate");
-    var muavin = q("setupMuavin");
-    var s1 = q("setupS1");
-    var s2 = q("setupS2");
-
-    if(date && !date.value) date.value = todayLocal();
-    if(time && !time.value) time.value = timeLocal();
-    if(plate && !String(plate.value || "").trim()) plate.value = DEF.plate;
-
-    if(muavin && !String(muavin.value || "").trim()) muavin.value = DEF.staff["Muavin"];
-    if(s1 && !String(s1.value || "").trim()) s1.value = DEF.staff["1. Şoför"];
-    if(s2 && !String(s2.value || "").trim()) s2.value = DEF.staff["2. Şoför"];
-
-    var route = q("setupRoute");
-    if(route && !route.value) route.value = DEF.trip;
-  }
-
-  var oldStartTrip = window.startTrip;
-  if(typeof oldStartTrip === "function" && !oldStartTrip.__v3SetupAutoFixed){
-    window.startTrip = function(){
-      ensureSetupDefaults();
-      return oldStartTrip.apply(this, arguments);
-    };
-    window.startTrip.__v3SetupAutoFixed = true;
-  }
-
-  var oldInit = window.init;
-  if(typeof oldInit === "function" && !oldInit.__v3SetupAutoFixed){
-    window.init = function(){
-      var r = oldInit.apply(this, arguments);
-      setTimeout(ensureSetupDefaults, 0);
-      setTimeout(ensureSetupDefaults, 120);
-      setTimeout(ensureSetupDefaults, 500);
-      return r;
-    };
-    window.init.__v3SetupAutoFixed = true;
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", ensureSetupDefaults);
-  }else{
-    ensureSetupDefaults();
-  }
-
-  setTimeout(ensureSetupDefaults, 80);
-  setTimeout(ensureSetupDefaults, 300);
-  setTimeout(ensureSetupDefaults, 900);
-  setTimeout(ensureSetupDefaults, 1600);
-})();
-</script>
-<!-- END_V3_SETUP_AUTO_FIX -->
 
 </body></html>`}
 function downloadPusulaHtml(){const blob=new Blob([pusulaFullHtml()],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="hesap-pusulasi-"+ensurePusulaNo()+".html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),800)}
@@ -909,3 +730,140 @@ init();
 </script>
 </body>
 </html>
+
+<!-- START_V3_REAL_SETUP_FIX -->
+<script id="v3-real-setup-fix-js">
+(function(){
+  const ROUTES = [
+    "Denizli → İstanbul (Vardön)",
+    "İstanbul → Denizli (Vardön)",
+    "Denizli → İstanbul",
+    "İstanbul → Denizli",
+    "Antalya → İstanbul",
+    "İstanbul → Antalya",
+    "Denizli → İzmir",
+    "İzmir → Denizli"
+  ];
+
+  const DEF_ROUTE = "Denizli → İstanbul (Vardön)";
+
+  function pad(n){
+    return String(n).padStart(2, "0");
+  }
+
+  function today(){
+    const d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+
+  function nowTime(){
+    const d = new Date();
+    return pad(d.getHours()) + ":" + pad(d.getMinutes());
+  }
+
+  function q(id){
+    return document.getElementById(id);
+  }
+
+  function fire(el){
+    if(!el) return;
+    try{ el.dispatchEvent(new Event("input", {bubbles:true})); }catch(e){}
+    try{ el.dispatchEvent(new Event("change", {bubbles:true})); }catch(e){}
+  }
+
+  function routeOptionExists(sel, val){
+    if(!sel) return false;
+    for(let i=0;i<sel.options.length;i++){
+      if(sel.options[i].value === val || sel.options[i].textContent === val){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function addRouteOption(sel, val){
+    if(!sel || !val) return;
+    if(routeOptionExists(sel, val)) return;
+
+    const o = document.createElement("option");
+    o.value = val;
+    o.textContent = val;
+    sel.appendChild(o);
+  }
+
+  function fillSetup(){
+    const route = q("setupRoute");
+    const date = q("setupDate");
+    const time = q("setupTime");
+
+    if(route){
+      if(route.options.length === 0){
+        ROUTES.forEach(r => addRouteOption(route, r));
+      }else{
+        ROUTES.forEach(r => addRouteOption(route, r));
+      }
+
+      if(!route.value || route.value === "__custom_route_add__"){
+        route.value = DEF_ROUTE;
+      }
+
+      if(!route.value && route.options.length){
+        route.selectedIndex = 0;
+      }
+
+      fire(route);
+    }
+
+    if(date && !date.value){
+      date.value = today();
+      fire(date);
+    }
+
+    if(time && !time.value){
+      time.value = nowTime();
+      fire(time);
+    }
+
+    try{
+      if(typeof state !== "undefined" && state){
+        state.trip = route && route.value ? route.value : DEF_ROUTE;
+        state.date = date && date.value ? date.value : today();
+        state.time = time && time.value ? time.value : nowTime();
+
+        if(typeof saveState === "function"){
+          saveState();
+        }
+      }
+    }catch(e){}
+  }
+
+  const oldStartTrip = window.startTrip;
+  if(typeof oldStartTrip === "function"){
+    window.startTrip = function(){
+      fillSetup();
+      return oldStartTrip.apply(this, arguments);
+    };
+  }
+
+  window.v3FillSetupNow = fillSetup;
+
+  function run(){
+    fillSetup();
+    setTimeout(fillSetup, 100);
+    setTimeout(fillSetup, 400);
+    setTimeout(fillSetup, 1000);
+    setTimeout(fillSetup, 2000);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", run);
+  }else{
+    run();
+  }
+
+  window.addEventListener("load", run);
+  window.addEventListener("pageshow", run);
+})();
+</script>
+<!-- END_V3_REAL_SETUP_FIX -->
+
