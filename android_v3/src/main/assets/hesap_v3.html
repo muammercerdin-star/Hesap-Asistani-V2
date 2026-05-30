@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<title>Hesap Asistanı V3</title>
+<style>
+:root{
+  --bg:#070d16;--panel:#111827;--panel2:#172033;--line:#293548;
+  --text:#f8fafc;--dim:#94a3b8;--green:#22c55e;--green2:#15803d;
+  --red:#ef4444;--red2:#991b1b;--blue:#38bdf8;--blue2:#0369a1;
+  --gold:#facc15;--paper:#f4edd6;--ink:#111827;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.top{padding:8px 14px 7px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#101827,#080d15)}
+.route{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
+.kicker{color:var(--dim);font-size:10px;font-weight:1000;letter-spacing:.15em}
+.route-name{font-size:20px;font-weight:1000;line-height:1}
+.count{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 10px;color:var(--dim);font-size:12px;font-weight:1000;white-space:nowrap}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.role-btn{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:13px;min-height:44px;font-weight:1000;font-size:14px;padding:5px 3px}
+.role-btn small{display:block;font-size:9.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.role-btn.on{border-color:var(--green);background:rgba(34,197,94,.13);color:#fff}
+.kasa{text-align:center;padding:7px 12px 6px;border-bottom:1px solid var(--line)}
+.kasa .lbl{color:var(--dim);font-size:10.5px;font-weight:1000;letter-spacing:.17em}
+.kasa .val{font-size:36px;line-height:1;font-weight:1000;color:var(--green);margin-top:2px}
+.mini-row{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-top:5px}
+.mini{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:999px;padding:4px 7px;font-size:10px;font-weight:900}
+.page{flex:1;min-height:0;overflow:auto;display:none;padding-bottom:12px}
+.page.active{display:block}
+.display{height:82px;padding:6px 14px;display:flex;align-items:center;justify-content:center}
+.typed{width:100%;height:62px;border:1px dashed transparent;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;line-height:1;font-weight:1000}
+.typed.empty{border-color:rgba(148,163,184,.22);background:rgba(2,6,15,.18);color:rgba(148,163,184,.34)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px 14px}
+.key{height:54px;border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:15px;font-size:27px;font-weight:1000;display:flex;align-items:center;justify-content:center}
+.key:active{transform:scale(.96);background:var(--panel2)}
+.key.util{font-size:22px;color:var(--dim)}
+.key.clear{color:#fde68a;border-color:rgba(250,204,21,.34);background:rgba(120,83,20,.18)}
+.key.del{color:#fecaca;border-color:rgba(239,68,68,.34);background:rgba(127,29,29,.22)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 14px 8px}
+.big{height:52px;border:0;border-radius:16px;color:#fff;font-size:18px;font-weight:1000;line-height:1}
+.big:disabled{opacity:.35;filter:grayscale(.5)}
+.big.in{background:linear-gradient(180deg,var(--green),var(--green2))}
+.big.out{background:linear-gradient(180deg,var(--red),var(--red2))}
+.section-title{color:var(--dim);font-size:11px;font-weight:1000;letter-spacing:.14em;margin:8px 14px 5px}
+.move{margin:7px 14px;border:1px solid var(--line);background:var(--panel);border-radius:17px;padding:11px;position:relative}
+.move-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
+.move b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{color:var(--dim);font-size:11.5px;font-weight:800;margin-top:3px;line-height:1.25}
+.amount{font-size:17px;font-weight:1000;white-space:nowrap}
+.plus{color:var(--green)}.minus{color:var(--red)}.transfer{color:var(--blue)}.gold{color:var(--gold)}
+.empty{margin:14px;padding:18px;border:1px dashed var(--line);border-radius:18px;text-align:center;color:var(--dim);font-weight:900}
+.nav{display:grid;grid-template-columns:repeat(6,1fr);background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{border:0;background:transparent;color:var(--dim);padding:8px 1px 7px;font-size:9.5px;font-weight:1000}
+.nav button.on{color:#fff}.nav span{display:block;font-size:19px;margin-bottom:2px}
+.wrap{padding:12px 14px 24px}
+.hero,.card{border:1px solid var(--line);background:var(--panel);border-radius:22px;padding:14px;margin-bottom:12px}
+.hero{background:radial-gradient(circle at top left,rgba(56,189,248,.12),transparent 45%),var(--panel)}
+.hero h1{margin:0 0 6px;font-size:27px;line-height:1.05}
+.sub{color:var(--dim);font-size:13px;font-weight:850;line-height:1.35}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.stat{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:12px;min-height:80px}
+.stat .t{color:var(--dim);font-size:10px;font-weight:1000;letter-spacing:.12em}
+.stat .v{margin-top:6px;font-size:22px;font-weight:1000}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}
+.tab{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:14px;min-height:42px;font-size:12px;font-weight:1000}
+.tab.on{color:#fff;border-color:rgba(56,189,248,.52);background:rgba(56,189,248,.13)}
+.pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pick{border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:16px;padding:11px 7px;font-size:14px;font-weight:1000}
+.pick.on{border-color:var(--blue);background:rgba(56,189,248,.14)}
+.full{width:100%;min-height:54px;border:0;border-radius:17px;background:linear-gradient(180deg,var(--blue),var(--blue2));color:#fff;font-size:17px;font-weight:1000}
+.full.green{background:linear-gradient(180deg,var(--green),var(--green2))}
+.full.warn{background:linear-gradient(180deg,var(--gold),#b45309);color:#111827}
+.full.dark{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.field{margin-bottom:10px}.field label{display:block;color:var(--dim);font-size:11px;font-weight:1000;letter-spacing:.1em;margin-bottom:6px}
+.field input,.field select,.note input{width:100%;height:52px;border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:15px;padding:0 13px;font-size:16px;font-weight:900;outline:none}
+.setup{position:fixed;inset:0;z-index:100;background:linear-gradient(180deg,#0b1220,#050914);overflow:auto;padding:18px 14px 28px}
+.setup.hide{display:none}
+.route-add-box{display:none;margin-top:10px;border:1px dashed rgba(34,197,94,.55);background:rgba(34,197,94,.08);border-radius:17px;padding:11px}
+.route-add-box.show{display:block}
+.route-add-row{display:grid;grid-template-columns:1fr auto;gap:8px}
+.route-add-row button{height:50px;border:0;border-radius:15px;background:linear-gradient(180deg,var(--green),var(--green2));color:#fff;font-size:14px;font-weight:1000;padding:0 13px}
+.sheet-back,.fix-back,.detail-back,.pusula-full-back{position:fixed;inset:0;z-index:150;background:rgba(2,6,15,.76);backdrop-filter:blur(8px);display:none}
+.sheet-back.show,.fix-back.show,.detail-back.show,.pusula-full-back.show{display:flex}
+.sheet-back{align-items:flex-end}.sheet{width:100%;max-height:88vh;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;overflow:hidden;display:flex;flex-direction:column}
+.sheet.out .dot{background:var(--red)}
+.sheet-head{padding:16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.sheet-title{font-size:28px;font-weight:1000}.sheet-sub{margin-top:3px;color:var(--dim);font-size:13px;font-weight:900}
+.close{width:46px;height:46px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--dim);font-size:28px;font-weight:1000}
+.sheet-body{overflow:auto;padding:10px 12px 16px}
+.cat-list{display:grid;gap:8px}
+.cat{width:100%;min-height:58px;border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:17px;padding:0 15px;text-align:left;font-size:18px;font-weight:1000;display:flex;align-items:center;gap:11px}
+.dot{width:12px;height:12px;border-radius:99px;background:var(--green);flex:0 0 auto}
+.inline-add{margin:12px 0;border:1px dashed rgba(34,197,94,.6);background:rgba(34,197,94,.08);border-radius:18px;padding:13px}
+.inline-add.out{border-color:rgba(239,68,68,.6);background:rgba(239,68,68,.08)}
+.inline-title{color:#bbf7d0;font-size:12px;font-weight:1000;letter-spacing:.11em;margin-bottom:9px}
+.inline-add.out .inline-title{color:#fca5a5}
+.cat-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
+.cat-type-btn{height:38px;border-radius:13px;border:1px solid var(--line);background:var(--panel2);color:var(--dim);font-size:12px;font-weight:1000}
+.cat-type-btn.on{color:#fff;border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.15)}
+.inline-row{display:grid;grid-template-columns:1fr 118px;gap:8px}
+.inline-row input{height:50px;border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:15px;padding:0 12px;font-size:15px;font-weight:900;outline:none}
+.inline-row button{height:50px;border:0;border-radius:15px;background:linear-gradient(180deg,var(--green),var(--green2));color:#fff;font-size:13px;font-weight:1000}
+.inline-add.out .inline-row button{background:linear-gradient(180deg,var(--red),var(--red2))}
+.note{margin-top:10px}
+.toast{position:fixed;z-index:250;left:50%;top:44%;transform:translate(-50%,-50%) scale(.9);background:var(--panel2);border:2px solid var(--green);border-radius:22px;min-width:230px;max-width:86vw;padding:18px;text-align:center;opacity:0;pointer-events:none;transition:.16s;box-shadow:0 18px 50px rgba(0,0,0,.38)}
+.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.toast b{font-size:22px}.toast div{color:var(--dim);font-weight:900;margin-top:5px}
+.toast.out{border-color:var(--red)}.toast.transfer{border-color:var(--blue)}
+.modal{width:100%;max-width:430px;margin:auto;border:1px solid var(--line);background:var(--panel);border-radius:24px;padding:16px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.modal-title{font-size:24px;font-weight:1000;margin-bottom:6px}.modal-text{color:var(--dim);font-size:14px;font-weight:850;line-height:1.4;margin-bottom:12px}
+.modal-preview{border:1px dashed rgba(250,204,21,.45);background:rgba(250,204,21,.08);border-radius:18px;padding:12px;color:#fde68a;font-weight:900;line-height:1.35;margin-bottom:14px}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions button{height:50px;border-radius:15px;font-size:14px;font-weight:1000}
+.btn-cancel{background:var(--panel2);color:var(--dim);border:1px solid var(--line)}
+.btn-confirm{border:0;background:linear-gradient(180deg,#facc15,#b45309);color:#111827}
+.move-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.tag{border:1px solid var(--line);background:rgba(148,163,184,.08);color:var(--dim);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:1000}
+.tag.warn{border-color:rgba(250,204,21,.45);color:#fde68a;background:rgba(250,204,21,.10)}
+.fix-btn{margin-top:8px;border:1px solid rgba(250,204,21,.48);background:rgba(250,204,21,.12);color:#fde68a;border-radius:12px;min-height:34px;padding:0 12px;font-size:12px;font-weight:1000}
+#recentList .move-tags,#recentList .fix-btn{display:none}
+.paper{background:var(--paper);color:var(--ink);border-radius:18px;padding:0 12px 16px;border:1px solid rgba(120,113,108,.35);box-shadow:0 20px 50px rgba(0,0,0,.28);overflow:hidden;position:relative}
+.paper:before{content:"";position:absolute;left:0;right:0;top:0;height:34px;background:repeating-linear-gradient(90deg,rgba(120,113,108,.14) 0 1px,transparent 1px 38px),linear-gradient(180deg,#d8cf9b,#cfc58d)}
+.paper-inner{position:relative;z-index:2;padding-top:48px}
+.paper-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.paper-brand{font-size:11px;font-weight:1000;letter-spacing:.09em;color:#374151}.paper-title{text-align:right;font-size:22px;font-weight:1000;letter-spacing:.08em;color:#111827;line-height:1.05}
+.paper-no,.paper-sub{margin-top:4px;font-size:12px;color:#6b7280;font-weight:900}
+.hand{font-family:"Segoe Print","Comic Sans MS",cursive;color:#1d4ed8;font-weight:850}
+.paper-info{border:1px solid rgba(31,41,55,.42);border-radius:14px;padding:9px;margin-bottom:12px;background:rgba(255,255,255,.22)}
+.paper-line{display:grid;grid-template-columns:76px 1fr;gap:8px;border-bottom:1px dotted rgba(31,41,55,.32);padding:5px 0}.paper-line:last-child{border-bottom:0}
+.paper-label{font-size:11px;font-weight:1000;color:#374151}
+.p-section{margin-top:12px}.p-head{display:flex;justify-content:space-between;gap:8px;background:rgba(31,41,55,.08);border:1px solid rgba(31,41,55,.32);border-bottom:0;border-radius:12px 12px 0 0;padding:8px 10px}
+.p-head b{font-size:11px;font-weight:1000;letter-spacing:.09em;color:#374151}.p-head span{font-size:15px;font-weight:1000;white-space:nowrap}
+.p-section.donus .p-head span,.p-section.donus .p-money{color:#166534}.p-section.gider .p-head span,.p-section.gider .p-main,.p-section.gider .p-money{color:#b91c1c}.p-section.teslim .p-head span,.p-section.teslim .p-money{color:#0284c7}
+.p-table{width:100%;border-collapse:collapse;background:rgba(255,255,255,.16);table-layout:fixed}
+.p-table th,.p-table td{border:1px solid rgba(31,41,55,.34);padding:6px 4px;text-align:left;vertical-align:middle}
+.p-table th{font-size:8.7px;color:#374151;font-weight:1000}.p-table .no{width:27px;text-align:center}.p-table .time{width:49px;text-align:center}.p-table .money{width:70px;text-align:right}
+.p-main{display:block;font-family:"Segoe Print","Comic Sans MS",cursive;color:#1d4ed8;font-size:12.5px;font-weight:850;line-height:1.2}.p-sub{display:block;margin-top:3px;color:#64748b;font-size:9.4px;font-weight:950;line-height:1.2}.p-money{font-family:"Segoe Print","Comic Sans MS",cursive;color:#1d4ed8;font-size:12.5px;font-weight:1000;white-space:nowrap}
+.p-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.p-sum{border:1px solid rgba(31,41,55,.36);border-radius:12px;padding:9px;background:rgba(255,255,255,.18)}.p-sum .k{font-size:10px;color:#374151;font-weight:1000}.p-sum .v{margin-top:4px;font-family:"Segoe Print","Comic Sans MS",cursive;color:#1d4ed8;font-size:17px;font-weight:1000;text-align:right}
+.p-note{color:#6b7280;font-size:11px;font-weight:850;margin-top:10px;line-height:1.35}.p-sign{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.p-sign-box{border-top:1px solid rgba(31,41,55,.42);padding-top:6px;font-size:11px;font-weight:900;color:#374151;min-height:34px}
+.pusula-actions,.report-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.pusula-actions button,.report-actions button{min-height:46px;border:0;border-radius:14px;font-size:13px;font-weight:1000}
+.btn-green{background:linear-gradient(180deg,var(--green),var(--green2));color:white}.btn-blue{background:linear-gradient(180deg,var(--blue),var(--blue2));color:white}.btn-gold{background:linear-gradient(180deg,var(--gold),#b45309);color:#111827}.btn-red{background:rgba(239,68,68,.13);color:#fecaca;border:1px solid rgba(239,68,68,.35)!important}
+@media(max-height:720px){.key{height:48px}.big{height:48px}.display{height:72px}.typed{height:54px;font-size:30px}.kasa .val{font-size:32px}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="top">
+    <div class="route">
+      <div>
+        <div class="kicker">AKTİF SEFER</div>
+        <div class="route-name" id="tripName">-</div>
+      </div>
+      <div class="count" id="moveCount">0 kayıt</div>
+    </div>
+    <div class="roles" id="roleButtons"></div>
+  </div>
+
+  <div class="kasa">
+    <div class="lbl">KASADA TOPLAM</div>
+    <div class="val" id="totalCash">0 ₺</div>
+    <div class="mini-row" id="miniBalances"></div>
+  </div>
+
+  <main class="page active" id="page-kasa">
+    <div class="display"><div class="typed empty" id="typed">0 ₺</div></div>
+    <div class="pad">
+      <div class="key" onclick="press('1')">1</div><div class="key" onclick="press('2')">2</div><div class="key" onclick="press('3')">3</div>
+      <div class="key" onclick="press('4')">4</div><div class="key" onclick="press('5')">5</div><div class="key" onclick="press('6')">6</div>
+      <div class="key" onclick="press('7')">7</div><div class="key" onclick="press('8')">8</div><div class="key" onclick="press('9')">9</div>
+      <div class="key util clear" onclick="clearTyped()">C</div><div class="key" onclick="press('0')">0</div><div class="key util del" onclick="backspace()">⌫</div>
+    </div>
+    <div class="actions">
+      <button class="big in" id="btnIn" onclick="openCategorySheet('in')" disabled>↓<br>GİRDİ</button>
+      <button class="big out" id="btnOut" onclick="openCategorySheet('out')" disabled>↑<br>ÇIKTI</button>
+    </div>
+    <div class="section-title">SON İŞLEM</div>
+    <div id="recentList"></div>
+  </main>
+
+  <main class="page" id="page-dokum">
+    <div class="wrap">
+      <div class="hero"><h1>Patron Dökümü</h1><div class="sub">Aktif toplamlar, düzeltmeler ve paranın kimde olduğu net görünür.</div></div>
+      <div class="stat-grid" id="dokumSummary"></div>
+      <div class="card"><div class="section-title" style="margin:0 0 8px">KİŞİYE GÖRE KASA</div><div id="dokumPeople"></div></div>
+      <div class="tabs">
+        <button class="tab on" id="tab-all" onclick="setDokumFilter('all')">Tümü</button>
+        <button class="tab" id="tab-in" onclick="setDokumFilter('in')">Girdi</button>
+        <button class="tab" id="tab-out" onclick="setDokumFilter('out')">Çıktı</button>
+        <button class="tab" id="tab-transfer" onclick="setDokumFilter('transfer')">Teslim</button>
+      </div>
+      <div id="allMoves"></div>
+    </div>
+  </main>
+
+  <main class="page" id="page-teslim">
+    <div class="display"><div class="typed empty" id="transferTyped">0 ₺</div></div>
+    <div class="pad">
+      <div class="key" onclick="pressTransfer('1')">1</div><div class="key" onclick="pressTransfer('2')">2</div><div class="key" onclick="pressTransfer('3')">3</div>
+      <div class="key" onclick="pressTransfer('4')">4</div><div class="key" onclick="pressTransfer('5')">5</div><div class="key" onclick="pressTransfer('6')">6</div>
+      <div class="key" onclick="pressTransfer('7')">7</div><div class="key" onclick="pressTransfer('8')">8</div><div class="key" onclick="pressTransfer('9')">9</div>
+      <div class="key util clear" onclick="clearTransfer()">C</div><div class="key" onclick="pressTransfer('0')">0</div><div class="key util del" onclick="backspaceTransfer()">⌫</div>
+    </div>
+    <div class="wrap" style="padding-top:6px">
+      <div class="card"><h2>Kimden?</h2><div class="pick-grid" id="fromPick"></div></div>
+      <div class="card"><h2>Kime?</h2><div class="pick-grid" id="toPick"></div></div>
+      <button class="full" id="transferBtn" onclick="saveTransfer()" disabled>TESLİM ET</button>
+    </div>
+  </main>
+
+  <main class="page" id="page-bitir">
+    <div class="wrap">
+      <div class="hero"><div class="kicker">SEFER KAPANIŞI</div><h1>Patron Kapanış Raporu</h1><div class="sub" id="closeTripInfo">Hazırlanıyor...</div></div>
+      <div id="closeStatus" class="card"></div>
+      <div class="stat-grid" id="closeStats"></div>
+      <div class="card"><div class="section-title" style="margin:0 0 8px">PARA KİMDE?</div><div id="closePeople"></div></div>
+      <div id="closeActions"></div>
+    </div>
+  </main>
+
+  <main class="page" id="page-raporlar">
+    <div class="wrap">
+      <div class="hero"><h1>Sefer Raporları</h1><div class="sub">Kapatılan seferlerin raporları burada saklanır.</div></div>
+      <div id="reportsList"></div>
+    </div>
+  </main>
+
+  <main class="page" id="page-pusula">
+    <div class="wrap">
+      <div class="hero"><h1>Hesap Pusulası</h1><div class="sub">Kayıtlar otomatik olarak bölümlü kağıt pusula görünümüne işlenir.</div></div>
+      <div class="pusula-actions">
+        <button class="btn-green" onclick="sendPusulaWhatsApp()">WhatsApp</button>
+        <button class="btn-gold" onclick="copyPusulaText()">Kopyala</button>
+        <button class="btn-blue" onclick="downloadPusulaHtml()">HTML İndir</button>
+        <button class="btn-blue" onclick="openPusulaFull()">Tam Ekran</button>
+      </div>
+      <div id="pusulaPreview"></div>
+    </div>
+  </main>
+
+  <nav class="nav">
+    <button class="on" onclick="goTab('kasa',this)"><span>🧾</span>Kasa</button>
+    <button onclick="goTab('dokum',this)"><span>📋</span>Döküm</button>
+    <button onclick="goTab('teslim',this)"><span>🤝</span>Teslim</button>
+    <button onclick="goTab('bitir',this)"><span>⛔</span>Bitir</button>
+    <button onclick="goTab('raporlar',this)"><span>📁</span>Raporlar</button>
+    <button onclick="goTab('pusula',this)"><span>📝</span>Pusula</button>
+  </nav>
+</div>
+
+<div class="setup" id="setup">
+  <div class="card">
+    <div class="kicker" style="color:var(--green)">HESAP ASİSTANI V3</div>
+    <h1 style="font-size:37px;margin:8px 0">Seferi başlat</h1>
+    <div class="sub">Kasa başlamadan önce sefer ve görevli isimleri netleşir.</div>
+  </div>
+  <div class="card">
+    <h2>Sefer Bilgisi</h2>
+    <div class="field">
+      <label>HAT / GÜZERGÂH</label>
+      <select id="setupRoute"></select>
+      <div class="route-add-box" id="routeAddBox">
+        <div class="inline-title">+ YENİ HAT EKLE</div>
+        <div class="route-add-row">
+          <input id="newRouteInput" placeholder="Örn: Alaşehir → İstanbul">
+          <button type="button" onclick="addManualRoute()">Ekle</button>
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>TARİH</label><input id="setupDate" type="date"></div>
+      <div class="field"><label>SAAT</label><input id="setupTime" type="time"></div>
+    </div>
+    <div class="field"><label>PLAKA</label><input id="setupPlate" value="45 KH 999"></div>
+  </div>
+  <div class="card">
+    <h2>Görevliler</h2>
+    <div class="field"><label>MUAVİN</label><input id="setupMuavin" value="Muammer Çerdin"></div>
+    <div class="field"><label>1. ŞOFÖR</label><input id="setupS1" value="Recep Furan"></div>
+    <div class="field"><label>2. ŞOFÖR</label><input id="setupS2" value="Mehmet Seyhan"></div>
+    <button class="full green" onclick="startTrip()">SEFERİ BAŞLAT</button>
+    <button class="full dark" style="margin-top:9px" onclick="openReportsFromSetup()">KAPANAN SEFER RAPORLARI</button>
+  </div>
+</div>
+
+<div class="sheet-back" id="sheetBack">
+  <div class="sheet" id="sheet">
+    <div class="sheet-head">
+      <div><div class="sheet-title" id="sheetTitle">GİRDİ</div><div class="sheet-sub" id="sheetSub"></div></div>
+      <button class="close" onclick="closeCategorySheet()">×</button>
+    </div>
+    <div class="sheet-body">
+      <div class="cat-list" id="catList"></div>
+      <div id="inlineAddHost"></div>
+      <div class="note"><input id="noteInput" placeholder="Not ekle, isteğe bağlı"></div>
+    </div>
+  </div>
+</div>
+
+<div class="fix-back" id="fixBack">
+  <div class="modal">
+    <div class="modal-title">Düzeltme Kaydı</div>
+    <div class="modal-text">Bu işlem silinmez. Sistem ters kayıt oluşturur. Eski kayıt ve düzeltme kaydı dökümde görünür.</div>
+    <div class="modal-preview" id="fixPreview">Düzeltme hazırlanıyor...</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeFixModal()">Vazgeç</button>
+      <button class="btn-confirm" onclick="confirmCorrection()">DÜZELT</button>
+    </div>
+  </div>
+</div>
+
+<div class="detail-back" id="reportDetailBack">
+  <div class="modal">
+    <div class="modal-title" id="reportDetailTitle">Rapor</div>
+    <div class="modal-text" id="reportDetailSub"></div>
+    <pre id="reportDetailText" style="white-space:pre-wrap;max-height:55vh;overflow:auto;background:rgba(2,6,15,.28);border:1px solid var(--line);border-radius:14px;padding:10px"></pre>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeReportDetail()">Kapat</button>
+      <button class="btn-confirm" onclick="copyOpenReportText()">Kopyala</button>
+    </div>
+  </div>
+</div>
+
+<div class="pusula-full-back" id="pusulaFullBack">
+  <div style="width:100%;height:100%;display:flex;flex-direction:column">
+    <div style="height:54px;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(15,23,42,.96);border-bottom:1px solid rgba(148,163,184,.18)">
+      <b>Hesap Pusulası</b>
+      <button class="close" onclick="closePusulaFull()">×</button>
+    </div>
+    <div id="pusulaFullCanvas" style="flex:1;overflow:auto;padding:10px"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE={
+  state:"hesap_asistani_v3_state",
+  routes:"hesap_asistani_v3_routes",
+  inCats:"hesap_asistani_v3_in_categories",
+  outCats:"hesap_asistani_v3_out_categories",
+  reports:"hesap_asistani_v3_reports"
+};
+const ROLES=["Muavin","1. Şoför","2. Şoför"];
+const ROUTE_ADD="__add_route__";
+const DEFAULT_ROUTES=["Antalya → İstanbul","İstanbul → Antalya","Denizli → İstanbul","İstanbul → Denizli","Denizli → İstanbul (Vardön)","İstanbul → Denizli (Vardön)","Denizli → İzmir","İzmir → Denizli"];
+const FIXED_IN=[
+"Sarıgöl Hesap","Sarıgöl Emanet","Alaşehir STADYUM Hesap","Alaşehir Emanet","Salihli 1 Hesap","Salihli 2 Hesap","Salihli Emanet","Salihli 1 Dönüş","Salihli 2 Dönüş","Ahmetli Hesap","Ahmetli Emanet","Turgutlu Hesap","Turgutlu Emanet","Turgutlu Dönüş","Manisa Hesap","Manisa Dönüş","Akhisar Hesap","Akhisar Emanet","Balıkesir Hesap","Balıkesir Emanet","Balıkesir Dönüş","Susurluk Hesap","Susurluk Dönüş","M.Kemal Paşa Hesap","M.Kemal Paşa Dönüş","M.Kemal Paşa Emanet","Bursa Emanet","Bursa Dönüş","Gebze Emanet","Gebze Hesap","Gebze Dönüş","Esenler Dönüş"
+];
+const FIXED_OUT=[
+"Akhisar Çıkış","Alibeyköy Çıkış","Balıkesir Çıkış Parası","Börek","Bursa Çıkış","Bursa Garaj Çıkış","Denizli Çıkış Parası","Diğer Çıkış","Esenler Çıkış","Esenler Kapı","Feribot","Gebze Çıkış","Gebze Garaj Çıkış","Harem Çıkış","İkram","Karasör","Manisa Çıkış","Masa Parası","Mustafa K.P Çıkış","Otogar","Recep Abi Yevmiye","Recep Abi Yol Parası","Recep Furan Yevmiye","Salihli Çıkış","Servet Abi Yevmiye","Sigara","Sigara Çay","Su / Çay","Susurluk Çıkış","Temizlik","Tesis Masa Parası","Yemek","Yevmiye","Yevmiye Şoför","Yıkama"
+];
+
+let state=loadState(),typed="",transferTyped="",pendingDir=null,pendingCatType="hesap",transferFrom="Muavin",transferTo="1. Şoför",dokumFilter="all",pendingCorrectionId=null,openReportId=null;
+
+function today(){return new Date().toISOString().slice(0,10)}
+function currentTime(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function now(){return new Date().toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}
+function fmt(n){return new Intl.NumberFormat("tr-TR").format(Math.abs(Number(n||0)))+" ₺"}
+function signed(n){return (Number(n)<0?"-":"")+fmt(n)}
+function norm(x){return String(x||"").toLocaleLowerCase("tr-TR").replace(/\s+/g," ").trim()}
+function clean(x){return String(x||"").replace(/\s+/g," ").trim()}
+function esc(x){return String(x||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function holderName(r){return state.staff[r]||r}
+function total(){return ROLES.reduce((s,r)=>s+Number(state.balances[r]||0),0)}
+function defaultState(){
+  return {started:false,trip:"İstanbul → Denizli",date:today(),time:currentTime(),plate:"45 KH 999",staff:{"Muavin":"Muammer Çerdin","1. Şoför":"Recep Furan","2. Şoför":"Mehmet Seyhan"},activeRole:"Muavin",balances:{"Muavin":0,"1. Şoför":0,"2. Şoför":0},moves:[],pusulaNo:""};
+}
+function loadState(){
+  try{
+    const s=JSON.parse(localStorage.getItem(STORE.state)||"null")||defaultState();
+    const d=defaultState();
+    s.staff={...d.staff,...(s.staff||{})};
+    s.balances={...d.balances,...(s.balances||{})};
+    s.moves=Array.isArray(s.moves)?s.moves:[];
+    return {...d,...s};
+  }catch(e){return defaultState()}
+}
+function saveState(){localStorage.setItem(STORE.state,JSON.stringify(state))}
+
+function readList(key){try{const a=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+function writeList(key,arr){localStorage.setItem(key,JSON.stringify(arr||[]))}
+function inferInType(label){const l=norm(label);if(l.includes("dönüş")||l.includes("donus")||l.includes("dönus"))return"donus";if(l.includes("emanet"))return"emanet";return"hesap"}
+function inferOutMeta(label){
+  const l=norm(label);let tur="çıkış";
+  if(l.includes("yemek"))tur="yemek";else if(l.includes("yıkama")||l.includes("yikama"))tur="yıkama";else if(l.includes("yevmiye"))tur="yevmiye";else if(l.includes("garaj"))tur="garaj çıkış";else if(l.includes("feribot"))tur="feribot";else if(l.includes("ikram"))tur="ikram";else if(l.includes("temizlik"))tur="temizlik";else if(l.includes("sigara"))tur="sigara";else if(l.includes("çay")||l.includes("cay")||l.includes("su"))tur="su/çay";else if(l.includes("otogar"))tur="otogar";else if(l.includes("masa"))tur="masa parası";
+  const yer=clean(label).replace(/garaj/ig,"").replace(/çıkış|cikis|çikis|çıkis/ig,"").replace(/parası|parasi/ig,"").trim();
+  return{yer,tur};
+}
+function makeCat(label,dir,extra={}){
+  label=clean(label);
+  if(dir==="in")return{label,dir,pusulaType:extra.pusulaType||inferInType(label),yer:extra.yer||"",tur:extra.tur||"",custom:!!extra.custom};
+  const m=inferOutMeta(label);
+  return{label,dir:"out",pusulaType:"gider",yer:extra.yer||m.yer,tur:extra.tur||m.tur,custom:!!extra.custom};
+}
+function mergeCats(fixed,custom,dir){
+  const map=new Map();
+  [...fixed.map(x=>makeCat(x,dir)),...custom.map(x=>makeCat(x.label||x,dir,x))].forEach(c=>{if(c.label&&!map.has(norm(c.label)))map.set(norm(c.label),c)});
+  return Array.from(map.values()).sort((a,b)=>a.label.localeCompare(b.label,"tr",{sensitivity:"base"}));
+}
+function allCats(dir){return dir==="in"?mergeCats(FIXED_IN,readList(STORE.inCats),"in"):mergeCats(FIXED_OUT,readList(STORE.outCats),"out")}
+function rememberCat(cat){
+  const key=cat.dir==="in"?STORE.inCats:STORE.outCats;
+  const list=readList(key);
+  const map=new Map(list.map(x=>[norm(x.label||x),x]));
+  map.set(norm(cat.label),cat);
+  writeList(key,Array.from(map.values()).sort((a,b)=>(a.label||a).localeCompare(b.label||b,"tr",{sensitivity:"base"})));
+}
+
+function populateRoutes(){
+  const custom=readList(STORE.routes).map(clean).filter(Boolean);
+  const routes=[...DEFAULT_ROUTES,...custom].filter((x,i,a)=>a.findIndex(y=>norm(y)===norm(x))===i);
+  const el=document.getElementById("setupRoute");
+  el.innerHTML=routes.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join("")+`<option value="${ROUTE_ADD}">+ Yeni hat ekle</option>`;
+  el.value=routes.includes(state.trip)?state.trip:"İstanbul → Denizli";
+}
+function bindRouteSelect(){
+  const el=document.getElementById("setupRoute");
+  el.onchange=()=>document.getElementById("routeAddBox").classList.toggle("show",el.value===ROUTE_ADD);
+  document.getElementById("newRouteInput").onkeydown=e=>{if(e.key==="Enter")addManualRoute()};
+}
+function addManualRoute(){
+  const input=document.getElementById("newRouteInput");
+  const r=clean(input.value).replace(/\s*-\s*>/g," → ").replace(/\s*→\s*/g," → ");
+  if(!r)return toast("⚠️ EKSİK","Hat adını yaz","out");
+  const list=readList(STORE.routes);list.push(r);writeList(STORE.routes,[...new Set(list.map(clean).filter(Boolean))]);
+  state.trip=r;saveState();populateRoutes();document.getElementById("setupRoute").value=r;document.getElementById("routeAddBox").classList.remove("show");toast("✅ HAT EKLENDİ",r,"in");
+}
+
+function init(){
+  populateRoutes();bindRouteSelect();
+  document.getElementById("setupDate").value=state.date||today();
+  document.getElementById("setupTime").value=state.started?state.time:currentTime();
+  document.getElementById("setupPlate").value=state.plate||"45 KH 999";
+  document.getElementById("setupMuavin").value=holderName("Muavin");
+  document.getElementById("setupS1").value=holderName("1. Şoför");
+  document.getElementById("setupS2").value=holderName("2. Şoför");
+  render();
+}
+function startTrip(){
+  const routeEl=document.getElementById("setupRoute");
+  if(routeEl.value===ROUTE_ADD)return toast("⚠️ HAT SEÇ","Önce yeni hattı ekle veya listeden seç","out");
+  state=defaultState();
+  state.started=true;
+  state.trip=routeEl.value||"İstanbul → Denizli";
+  state.date=document.getElementById("setupDate").value||today();
+  state.time=document.getElementById("setupTime").value||currentTime();
+  state.plate=clean(document.getElementById("setupPlate").value)||"45 KH 999";
+  state.staff={"Muavin":clean(document.getElementById("setupMuavin").value)||"Muammer Çerdin","1. Şoför":clean(document.getElementById("setupS1").value)||"Recep Furan","2. Şoför":clean(document.getElementById("setupS2").value)||"Mehmet Seyhan"};
+  saveState();render();toast("✅ SEFER BAŞLADI",state.trip,"in");
+}
+function render(){
+  document.getElementById("setup").classList.toggle("hide",state.started);
+  document.getElementById("tripName").textContent=state.trip||"-";
+  document.getElementById("moveCount").textContent=state.moves.length+" kayıt";
+  document.getElementById("totalCash").textContent=signed(total());
+  document.getElementById("miniBalances").innerHTML=ROLES.map(r=>`<div class="mini">${esc(r)}: ${signed(state.balances[r]||0)}</div>`).join("");
+  document.getElementById("roleButtons").innerHTML=ROLES.map(r=>`<button class="role-btn ${state.activeRole===r?'on':''}" onclick="setRole('${r}')">${esc(r)}<small>${esc(holderName(r))}</small></button>`).join("");
+  renderTyped();renderMoves();renderTransfer();renderClose();renderReports();renderPusula();saveState();
+}
+function setRole(r){state.activeRole=r;render();toast("👤 SORUMLU",holderName(r),"in")}
+function renderTyped(){
+  const el=document.getElementById("typed");
+  if(!typed){el.textContent="0 ₺";el.classList.add("empty")}else{el.textContent=fmt(Number(typed));el.classList.remove("empty")}
+  document.getElementById("btnIn").disabled=!(Number(typed)>0);
+  document.getElementById("btnOut").disabled=!(Number(typed)>0);
+}
+function press(d){if(typed.length>=7)return;if(!typed&&d==="0")return;typed+=d;renderTyped()}
+function backspace(){typed=typed.slice(0,-1);renderTyped()}
+function clearTyped(){typed="";renderTyped()}
+
+function openCategorySheet(dir){
+  const amount=Number(typed);if(!amount)return;
+  pendingDir=dir;pendingCatType=dir==="in"?"hesap":"gider";
+  const sheet=document.getElementById("sheet");sheet.className="sheet "+dir;
+  document.getElementById("sheetTitle").textContent=(dir==="in"?"GİRDİ":"ÇIKTI")+" • "+fmt(amount);
+  document.getElementById("sheetSub").textContent=holderName(state.activeRole)+" kasasına işlenecek";
+  document.getElementById("noteInput").value="";
+  buildCatList(dir);
+  document.getElementById("sheetBack").classList.add("show");
+}
+function closeCategorySheet(){document.getElementById("sheetBack").classList.remove("show");pendingDir=null}
+document.getElementById("sheetBack").addEventListener("click",e=>{if(e.target.id==="sheetBack")closeCategorySheet()});
+function buildCatList(dir){
+  const list=document.getElementById("catList"),host=document.getElementById("inlineAddHost");
+  list.innerHTML=allCats(dir).map((c,i)=>`<button class="cat" onclick="saveCashMoveByIndex('${dir}',${i})"><span class="dot"></span>${esc(c.label)}</button>`).join("");
+  host.innerHTML=`
+    <div class="inline-add ${dir}">
+      <div class="inline-title">+ ${dir==="in"?"YENİ GİRİŞ KATEGORİSİ":"YENİ ÇIKIŞ KATEGORİSİ"}</div>
+      ${dir==="in"?`<div class="cat-type-grid">
+        <button class="cat-type-btn on" data-t="hesap" onclick="setNewCatType('hesap',this)">Hesap</button>
+        <button class="cat-type-btn" data-t="emanet" onclick="setNewCatType('emanet',this)">Emanet</button>
+        <button class="cat-type-btn" data-t="donus" onclick="setNewCatType('donus',this)">Dönüş</button>
+      </div>`:""}
+      <div class="inline-row">
+        <input id="inlineCatInput" placeholder="${dir==="in"?"Örn: Sarıgöl Hesap":"Örn: Sarıgöl Çıkış"}">
+        <button type="button" onclick="addCategoryAndUse('${dir}')">Ekle ve Seç</button>
+      </div>
+    </div>`;
+  const inp=document.getElementById("inlineCatInput");inp.onkeydown=e=>{if(e.key==="Enter")addCategoryAndUse(dir)};
+}
+function setNewCatType(t,btn){pendingCatType=t;document.querySelectorAll(".cat-type-btn").forEach(b=>b.classList.remove("on"));btn.classList.add("on")}
+function saveCashMoveByIndex(dir,i){saveCashMove(allCats(dir)[i])}
+function addCategoryAndUse(dir){
+  const label=clean(document.getElementById("inlineCatInput").value);
+  if(!label)return toast("⚠️ EKSİK","Kategori adını yaz","out");
+  const cat=makeCat(label,dir,{pusulaType:dir==="in"?pendingCatType:"gider",custom:true});
+  rememberCat(cat);saveCashMove(cat);
+}
+function saveCashMove(cat){
+  const amount=Number(typed);if(!amount||!pendingDir||!cat)return;
+  const dir=pendingDir,sign=dir==="in"?1:-1,note=clean(document.getElementById("noteInput").value);
+  state.balances[state.activeRole]=Number(state.balances[state.activeRole]||0)+(amount*sign);
+  state.moves.unshift({id:Date.now(),kind:"cash",dir,amount,label:cat.label,yer:cat.yer||"",tur:cat.tur||"",pusulaType:cat.pusulaType||(dir==="out"?"gider":"hesap"),holder:state.activeRole,holderName:holderName(state.activeRole),note,time:now()});
+  typed="";closeCategorySheet();render();toast(dir==="in"?"✅ GİRDİ":"✅ ÇIKTI",cat.label+" • "+fmt(amount),dir==="in"?"in":"out");
+}
+
+function renderTransfer(){
+  const el=document.getElementById("transferTyped");
+  if(!transferTyped){el.textContent="0 ₺";el.classList.add("empty")}else{el.textContent=fmt(Number(transferTyped));el.classList.remove("empty")}
+  document.getElementById("fromPick").innerHTML=ROLES.map(r=>`<button class="pick ${transferFrom===r?'on':''}" onclick="setFrom('${r}')">${esc(r)}<br><small>${esc(holderName(r))}<br>${signed(state.balances[r]||0)}</small></button>`).join("");
+  document.getElementById("toPick").innerHTML=ROLES.map(r=>`<button class="pick ${transferTo===r?'on':''}" onclick="setTo('${r}')">${esc(r)}<br><small>${esc(holderName(r))}</small></button>`).join("");
+  document.getElementById("transferBtn").disabled=!(Number(transferTyped)>0)||transferFrom===transferTo;
+}
+function pressTransfer(d){if(transferTyped.length>=7)return;if(!transferTyped&&d==="0")return;transferTyped+=d;renderTransfer()}
+function backspaceTransfer(){transferTyped=transferTyped.slice(0,-1);renderTransfer()}
+function clearTransfer(){transferTyped="";renderTransfer()}
+function setFrom(r){transferFrom=r;if(transferTo===r)transferTo=ROLES.find(x=>x!==r);renderTransfer()}
+function setTo(r){transferTo=r;if(transferFrom===r)transferFrom=ROLES.find(x=>x!==r);renderTransfer()}
+function saveTransfer(){
+  const amount=Number(transferTyped);if(!amount||transferFrom===transferTo)return;
+  state.balances[transferFrom]-=amount;state.balances[transferTo]+=amount;
+  state.moves.unshift({id:Date.now(),kind:"transfer",amount,from:transferFrom,to:transferTo,fromName:holderName(transferFrom),toName:holderName(transferTo),time:now()});
+  transferTyped="";render();toast("🤝 TESLİM",holderName(transferFrom)+" → "+holderName(transferTo)+" • "+fmt(amount),"transfer");
+}
+
+function isActiveCash(m){return m.kind==="cash"&&!m.corrected&&!m.correctionOf}
+function isActiveTransfer(m){return m.kind==="transfer"&&!m.corrected&&!m.correctionOf}
+function activeIn(){return state.moves.filter(m=>isActiveCash(m)&&m.dir==="in").reduce((s,m)=>s+Number(m.amount||0),0)}
+function activeOut(){return state.moves.filter(m=>isActiveCash(m)&&m.dir==="out").reduce((s,m)=>s+Number(m.amount||0),0)}
+function activeTransfer(){return state.moves.filter(isActiveTransfer).reduce((s,m)=>s+Number(m.amount||0),0)}
+function filteredMoves(){
+  if(dokumFilter==="in")return state.moves.filter(m=>m.kind==="cash"&&m.dir==="in");
+  if(dokumFilter==="out")return state.moves.filter(m=>m.kind==="cash"&&m.dir==="out");
+  if(dokumFilter==="transfer")return state.moves.filter(m=>m.kind==="transfer"||m.kind==="owner_delivery");
+  return state.moves;
+}
+function setDokumFilter(f){dokumFilter=f;renderMoves()}
+function moveHtml(m){
+  const tags=[];
+  if(m.corrected)tags.push(`<span class="tag warn">DÜZELTİLDİ / AKTİF DEĞİL</span>`);
+  if(m.correctionOf)tags.push(`<span class="tag warn">DÜZELTME KAYDI</span>`);
+  const tagHtml=tags.length?`<div class="move-tags">${tags.join("")}</div>`:"";
+  const fixBtn=(!m.corrected&&!m.correctionOf&&m.kind!=="owner_delivery")?`<button class="fix-btn" onclick="openCorrection(${Number(m.id)})">Düzelt</button>`:"";
+  if(m.kind==="transfer")return `<div class="move"><div class="move-row"><div><b>Teslim: ${esc(m.from)} → ${esc(m.to)}</b><div class="meta">${esc(m.time)} • ${esc(m.fromName)} → ${esc(m.toName)}</div>${tagHtml}</div><div class="amount transfer">↔ ${fmt(m.amount)}</div></div>${fixBtn}</div>`;
+  if(m.kind==="owner_delivery")return `<div class="move"><div class="move-row"><div><b>Patrona Teslim</b><div class="meta">${esc(m.time)} • ${esc(m.from)} • ${esc(m.fromName)}</div></div><div class="amount transfer">↘ ${fmt(m.amount)}</div></div></div>`;
+  const plus=m.dir==="in";
+  const amtClass=m.correctionOf?"gold":(plus?"plus":"minus");
+  return `<div class="move"><div class="move-row"><div><b>${m.correctionOf?"DÜZELTME: ":""}${esc(m.label)}</b><div class="meta">${esc(m.time)} • ${esc(m.holder)} • ${esc(m.holderName)}${m.note?" • "+esc(m.note):""}</div>${tagHtml}</div><div class="amount ${amtClass}">${m.correctionOf?"↩ ":(plus?"+":"-")}${fmt(m.amount)}</div></div>${fixBtn}</div>`;
+}
+function renderMoves(){
+  const recent=state.moves.slice(0,1);
+  document.getElementById("recentList").innerHTML=recent.length?recent.map(moveHtml).join(""):`<div class="empty">Henüz işlem yok</div>`;
+  document.getElementById("dokumSummary").innerHTML=`
+    <div class="stat"><div class="t">AKTİF GİRDİ</div><div class="v plus">+${fmt(activeIn())}</div></div>
+    <div class="stat"><div class="t">AKTİF ÇIKTI</div><div class="v minus">-${fmt(activeOut())}</div></div>
+    <div class="stat"><div class="t">AKTİF TESLİM</div><div class="v transfer">↔ ${fmt(activeTransfer())}</div></div>
+    <div class="stat"><div class="t">KASADA</div><div class="v">${signed(total())}</div></div>`;
+  document.getElementById("dokumPeople").innerHTML=ROLES.map(r=>`<div class="move-row" style="padding:9px 0;border-bottom:1px solid rgba(148,163,184,.12)"><div><b>${esc(r)}</b><div class="meta">${esc(holderName(r))}</div></div><div class="amount ${state.balances[r]<0?'minus':'plus'}">${signed(state.balances[r]||0)}</div></div>`).join("");
+  ["all","in","out","transfer"].forEach(f=>{const b=document.getElementById("tab-"+f);if(b)b.classList.toggle("on",dokumFilter===f)});
+  const list=filteredMoves();
+  document.getElementById("allMoves").innerHTML=list.length?list.map(moveHtml).join(""):`<div class="empty">Bu filtrede kayıt yok</div>`;
+}
+function findMove(id){return state.moves.find(m=>Number(m.id)===Number(id))}
+function openCorrection(id){
+  const m=findMove(id);if(!m||m.corrected||m.correctionOf)return toast("⚠️ OLMAZ","Bu kayıt düzeltilemez","out");
+  pendingCorrectionId=Number(id);
+  document.getElementById("fixPreview").innerHTML=m.kind==="transfer"?`Ters teslim oluşturulacak:<br><b>${esc(m.toName)} → ${esc(m.fromName)}</b><br>${fmt(m.amount)}`:`Ters kasa kaydı oluşturulacak:<br><b>${m.dir==="in"?"ÇIKIŞ":"GİRİŞ"}</b> • ${esc(m.label)}<br>${fmt(m.amount)} • ${esc(m.holderName)}`;
+  document.getElementById("fixBack").classList.add("show");
+}
+function closeFixModal(){pendingCorrectionId=null;document.getElementById("fixBack").classList.remove("show")}
+function confirmCorrection(){
+  const m=findMove(pendingCorrectionId);if(!m)return closeFixModal();
+  m.corrected=true;m.correctedAt=now();
+  const amount=Number(m.amount||0);
+  if(m.kind==="transfer"){
+    state.balances[m.to]-=amount;state.balances[m.from]+=amount;
+    state.moves.unshift({id:Date.now(),kind:"transfer",amount,from:m.to,to:m.from,fromName:m.toName,toName:m.fromName,time:now(),correctionOf:m.id});
+  }else{
+    const reverse=m.dir==="in"?"out":"in",sign=reverse==="in"?1:-1;
+    state.balances[m.holder]+=amount*sign;
+    state.moves.unshift({id:Date.now(),kind:"cash",dir:reverse,amount,label:m.label,holder:m.holder,holderName:m.holderName,yer:m.yer||"",tur:"düzeltme",pusulaType:"duzeltme",note:"Düzeltme kaydı",time:now(),correctionOf:m.id});
+  }
+  closeFixModal();render();toast("↩️ DÜZELTİLDİ","Ters kayıt oluşturuldu","transfer");
+}
+document.getElementById("fixBack").addEventListener("click",e=>{if(e.target.id==="fixBack")closeFixModal()});
+
+function positives(){return ROLES.map(r=>({role:r,name:holderName(r),money:Number(state.balances[r]||0)})).filter(x=>x.money>0)}
+function negatives(){return ROLES.map(r=>({role:r,name:holderName(r),money:Number(state.balances[r]||0)})).filter(x=>x.money<0)}
+function renderClose(){
+  document.getElementById("closeTripInfo").innerHTML=`<b>${esc(state.trip)}</b><br>Plaka: <b>${esc(state.plate||"-")}</b> • Saat: <b>${esc(state.time||"-")}</b>`;
+  document.getElementById("closeStats").innerHTML=`
+    <div class="stat"><div class="t">AKTİF GİRDİ</div><div class="v plus">+${fmt(activeIn())}</div></div>
+    <div class="stat"><div class="t">AKTİF ÇIKTI</div><div class="v minus">-${fmt(activeOut())}</div></div>
+    <div class="stat"><div class="t">DÜZELTME</div><div class="v gold">${state.moves.filter(m=>m.corrected||m.correctionOf).length} kayıt</div></div>
+    <div class="stat"><div class="t">KASADA</div><div class="v">${signed(total())}</div></div>`;
+  document.getElementById("closePeople").innerHTML=ROLES.map(r=>`<div class="move-row" style="padding:9px 0;border-bottom:1px solid rgba(148,163,184,.12)"><div><b>${esc(r)}</b><div class="meta">${esc(holderName(r))}</div></div><div class="amount ${state.balances[r]<0?'minus':'plus'}">${signed(state.balances[r]||0)}</div></div>`).join("");
+  const p=positives(),n=negatives(),status=document.getElementById("closeStatus"),actions=document.getElementById("closeActions");
+  if(n.length){status.innerHTML=`<b class="minus">⚠️ Hesap kontrol gerekli</b><div class="sub">Bazı kişilerde eksi kasa var. Önce dökümden düzelt.</div>`;actions.innerHTML=`<button class="full dark" onclick="goTabByName('dokum')">DÖKÜME GİT</button>`;return}
+  if(p.length){status.innerHTML=`<b class="gold">⚠️ Teslim bekliyor</b><div class="sub">Personel üzerinde toplam <b>${fmt(p.reduce((s,x)=>s+x.money,0))}</b> görünüyor.</div>`;actions.innerHTML=`<button class="full warn" onclick="deliverAllToOwner()">PATRONA TESLİM ET VE SIFIRLA</button><button class="full dark" style="margin-top:9px" onclick="goTabByName('teslim')">PERSONEL ARASI TESLİM</button>`;return}
+  status.innerHTML=`<b class="plus">✅ Teslim tamam</b><div class="sub">Personel üzerinde kalan para görünmüyor. Sefer kapatılabilir.</div>`;actions.innerHTML=`<button class="full green" onclick="finishTrip()">SEFERİ KAPAT</button>`;
+}
+function deliverAllToOwner(){
+  const p=positives();if(!p.length)return;
+  p.forEach((x,i)=>{state.moves.unshift({id:Date.now()+i,kind:"owner_delivery",amount:x.money,from:x.role,fromName:x.name,time:now()});state.balances[x.role]=0});
+  render();toast("✅ PATRONA TESLİM","Personel kasaları sıfırlandı","transfer");
+}
+function reportTotals(s){const moves=s.moves||[];return{girdi:moves.filter(m=>isActiveCash(m)&&m.dir==="in").reduce((a,m)=>a+m.amount,0),cikti:moves.filter(m=>isActiveCash(m)&&m.dir==="out").reduce((a,m)=>a+m.amount,0),patron:moves.filter(m=>m.kind==="owner_delivery").reduce((a,m)=>a+m.amount,0),duz:moves.filter(m=>m.corrected||m.correctionOf).length}}
+function makeReport(snapshot){
+  const t=reportTotals(snapshot),id=Date.now(),staff=snapshot.staff||{},bal=snapshot.balances||{};
+  const lines=["HESAP ASİSTANI V3 - SEFER RAPORU","--------------------------------",`Sefer: ${snapshot.trip}`,`Plaka: ${snapshot.plate}`,`Tarih/Saat: ${snapshot.date} ${snapshot.time}`,"",`Aktif Girdi: +${fmt(t.girdi)}`,`Aktif Çıktı: -${fmt(t.cikti)}`,`Patrona Teslim: ${fmt(t.patron)}`,`Düzeltme: ${t.duz} kayıt`,"","Kişiye Göre Kasa",...ROLES.map(r=>`${r} / ${staff[r]||r}: ${signed(bal[r]||0)}`)];
+  return{id,title:(snapshot.trip||"Sefer")+" Raporu",createdAt:new Date().toLocaleString("tr-TR"),plate:snapshot.plate||"-",total:t.girdi-t.cikti,text:lines.join("\n")};
+}
+function finishTrip(){
+  if(positives().length||negatives().length)return toast("⚠️ KAPANMAZ","Önce kalan para / eksi kasa çözülmeli","out");
+  const reports=readList(STORE.reports),snap=JSON.parse(JSON.stringify(state));
+  reports.unshift(makeReport(snap));writeList(STORE.reports,reports.slice(0,50));
+  state=defaultState();typed="";transferTyped="";saveState();init();toast("✅ SEFER KAPANDI","Rapor arşive eklendi","in");
+}
+function renderReports(){
+  const box=document.getElementById("reportsList"),reports=readList(STORE.reports);
+  if(!reports.length){box.innerHTML=`<div class="empty">Henüz kapanış raporu yok</div>`;return}
+  box.innerHTML=reports.map(r=>`<div class="card"><div class="move-row"><div><b>${esc(r.title)}</b><div class="meta">${esc(r.createdAt)} • Plaka: ${esc(r.plate)}</div></div><div class="amount plus">${signed(r.total||0)}</div></div><div class="report-actions"><button class="btn-blue" onclick="openReportDetail(${Number(r.id)})">Detay</button><button class="btn-gold" onclick="copyReport(${Number(r.id)})">Kopyala</button><button class="btn-green" onclick="sendReportWhatsApp(${Number(r.id)})">WhatsApp</button><button class="btn-red" onclick="deleteReport(${Number(r.id)})">Sil</button></div></div>`).join("");
+}
+function getReport(id){return readList(STORE.reports).find(r=>Number(r.id)===Number(id))}
+function openReportDetail(id){const r=getReport(id);if(!r)return;openReportId=id;document.getElementById("reportDetailTitle").textContent=r.title;document.getElementById("reportDetailSub").textContent=r.createdAt;document.getElementById("reportDetailText").textContent=r.text;document.getElementById("reportDetailBack").classList.add("show")}
+function closeReportDetail(){openReportId=null;document.getElementById("reportDetailBack").classList.remove("show")}
+function copyText(txt){navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(txt):null}
+function copyReport(id){const r=getReport(id);if(r){copyText(r.text);toast("✅ KOPYALANDI","Rapor metni panoya alındı","in")}}
+function copyOpenReportText(){if(openReportId)copyReport(openReportId)}
+function sendReportWhatsApp(id){const r=getReport(id);if(r)window.open("https://wa.me/?text="+encodeURIComponent(r.text),"_blank")}
+function deleteReport(id){writeList(STORE.reports,readList(STORE.reports).filter(r=>Number(r.id)!==Number(id)));renderReports();toast("🗑️ SİLİNDİ","Rapor kaldırıldı","out")}
+function openReportsFromSetup(){document.getElementById("setup").classList.add("hide");goTabByName("raporlar")}
+
+function ensurePusulaNo(){if(!state.pusulaNo){const d=new Date();state.pusulaNo="HP-"+String(d.getFullYear()).slice(-2)+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(Math.floor(Math.random()*900)+100);saveState()}return state.pusulaNo}
+function dateText(){const p=(state.date||"").split("-");return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:(state.date||new Date().toLocaleDateString("tr-TR"))}
+function pusulaGroups(){
+  const g={hesap:[],emanet:[],donus:[],gider:[],teslim:[]};
+  state.moves.slice().reverse().forEach(m=>{
+    if(m.corrected||m.correctionOf)return;
+    if(m.kind==="cash"){
+      const type=m.dir==="out"?"gider":(m.pusulaType||inferInType(m.label));
+      if(g[type])g[type].push(m);else g.hesap.push(m);
+    }else if(m.kind==="transfer"||m.kind==="owner_delivery")g.teslim.push(m);
+  });
+  return g;
+}
+function sum(list){return(list||[]).reduce((a,m)=>a+Number(m.amount||0),0)}
+function pRows(list,type){
+  if(!list.length)return`<tr><td colspan="4"><div class="empty" style="color:#6b7280;margin:0;background:rgba(255,255,255,.18)">Bu bölümde kayıt yok</div></td></tr>`;
+  return list.map((m,i)=>{
+    if(type==="teslim"){
+      const main=m.kind==="owner_delivery"?"Patrona Teslim":`${m.from||""} → ${m.to||""}`;
+      const sub=m.kind==="owner_delivery"?(m.fromName||holderName(m.from)):`${m.fromName||holderName(m.from)} → ${m.toName||holderName(m.to)}`;
+      return`<tr><td class="no"><span class="hand">${i+1}</span></td><td><span class="p-main">${esc(main)}</span><span class="p-sub">${esc(sub)}</span></td><td class="time"><span class="hand">${esc(m.time||"")}</span></td><td class="money"><span class="p-money">↔ ${fmt(m.amount)}</span></td></tr>`;
+    }
+    const neg=type==="gider";
+    return`<tr><td class="no"><span class="hand">${i+1}</span></td><td><span class="p-main">${esc(m.label)}</span><span class="p-sub">${esc(m.holderName||holderName(m.holder))}</span></td><td class="time"><span class="hand">${esc(m.time||"")}</span></td><td class="money"><span class="p-money">${neg?"-":""}${fmt(m.amount)}</span></td></tr>`;
+  }).join("");
+}
+function pSection(title,list,type,totalText){return`<div class="p-section ${type}"><div class="p-head"><b>${title}</b><span>${totalText}</span></div><table class="p-table"><thead><tr><th class="no">No</th><th>Mahiyet</th><th class="time">Saat</th><th class="money">Tutar</th></tr></thead><tbody>${pRows(list,type)}</tbody></table></div>`}
+function buildPusulaHtml(){
+  const g=pusulaGroups(),normal=sum(g.hesap)+sum(g.emanet),donus=sum(g.donus),gider=sum(g.gider),teslim=sum(g.teslim);
+  return`<div class="paper"><div class="paper-inner"><div class="paper-head"><div><div class="paper-brand">HESAP ASİSTANI V3</div><div class="paper-no">Pusula No: <span class="hand">${esc(ensurePusulaNo())}</span></div></div><div><div class="paper-title">HESAP<br>PUSULASI</div><div class="paper-sub">Bölümlü otomatik kayıt</div></div></div>
+  <div class="paper-info">
+    <div class="paper-line"><div class="paper-label">SEFER</div><div class="hand">${esc(state.trip)}</div></div>
+    <div class="paper-line"><div class="paper-label">TARİH</div><div class="hand">${esc(dateText())}</div></div>
+    <div class="paper-line"><div class="paper-label">SAAT</div><div class="hand">${esc(state.time)}</div></div>
+    <div class="paper-line"><div class="paper-label">PLAKA</div><div class="hand">${esc(state.plate)}</div></div>
+    <div class="paper-line"><div class="paper-label">MUAVİN</div><div class="hand">${esc(holderName("Muavin"))}</div></div>
+    <div class="paper-line"><div class="paper-label">1. ŞOFÖR</div><div class="hand">${esc(holderName("1. Şoför"))}</div></div>
+    <div class="paper-line"><div class="paper-label">2. ŞOFÖR</div><div class="hand">${esc(holderName("2. Şoför"))}</div></div>
+  </div>
+  ${pSection("HESAPLAR / GARAJ",g.hesap,"hesap",fmt(sum(g.hesap)))}
+  ${pSection("EMANETLER",g.emanet,"emanet",fmt(sum(g.emanet)))}
+  ${pSection("DÖNÜŞLER",g.donus,"donus",fmt(donus))}
+  ${pSection("GİDERLER / ÇIKIŞLAR",g.gider,"gider","-"+fmt(gider))}
+  ${pSection("TESLİMLER",g.teslim,"teslim",fmt(teslim))}
+  <div class="p-summary"><div class="p-sum"><div class="k">TOPLAM GİRDİ</div><div class="v">${fmt(normal)}</div></div><div class="p-sum"><div class="k">TOPLAM DÖNÜŞ</div><div class="v">${fmt(donus)}</div></div><div class="p-sum"><div class="k">TOPLAM ÇIKIŞ</div><div class="v" style="color:#b91c1c">-${fmt(gider)}</div></div><div class="p-sum"><div class="k">TESLİM</div><div class="v" style="color:#0284c7">${fmt(teslim)}</div></div><div class="p-sum" style="grid-column:1/-1"><div class="k">NET KASA</div><div class="v" style="color:#166534">${signed(total())}</div></div></div>
+  <div class="p-note">Düzeltilmiş kayıtlar aktif pusula toplamına dahil edilmez. Detaylı iz kayıtları Döküm ekranındadır.</div>
+  <div class="p-sign"><div class="p-sign-box">Teslim Eden</div><div class="p-sign-box">Teslim Alan / Patron</div></div>
+  </div></div>`;
+}
+function renderPusula(){document.getElementById("pusulaPreview").innerHTML=buildPusulaHtml()}
+function pusulaText(){
+  const g=pusulaGroups(),lines=["HESAP ASİSTANI V3 - HESAP PUSULASI","--------------------------------","Pusula No: "+ensurePusulaNo(),"Sefer: "+state.trip,"Tarih: "+dateText(),"Plaka: "+state.plate,""];
+  [["HESAPLAR",g.hesap,""],["EMANETLER",g.emanet,""],["DÖNÜŞLER",g.donus,""],["GİDERLER",g.gider,"-"]].forEach(([title,list,sign])=>{lines.push(title);if(!list.length)lines.push("- Kayıt yok");list.forEach((m,i)=>lines.push(`${i+1}) ${m.label} | ${m.holderName} | ${m.time} | ${sign}${fmt(m.amount)}`));lines.push("")});
+  lines.push("Net Kasa: "+signed(total()));return lines.join("\n");
+}
+function copyPusulaText(){copyText(pusulaText());toast("✅ KOPYALANDI","Pusula metni panoya alındı","in")}
+function sendPusulaWhatsApp(){window.open("https://wa.me/?text="+encodeURIComponent(pusulaText()),"_blank")}
+function pusulaFullHtml(){return`<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hesap Pusulası</title><style>${document.querySelector("style").textContent}.app,.top,.kasa,.nav,.pusula-actions,.hero{display:none!important}body{overflow:auto;background:#ece7d7;padding:8px}</style></head><body>${buildPusulaHtml()}</body></html>`}
+function downloadPusulaHtml(){const blob=new Blob([pusulaFullHtml()],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="hesap-pusulasi-"+ensurePusulaNo()+".html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),800)}
+function openPusulaFull(){document.getElementById("pusulaFullCanvas").innerHTML=buildPusulaHtml();document.getElementById("pusulaFullBack").classList.add("show")}
+function closePusulaFull(){document.getElementById("pusulaFullBack").classList.remove("show")}
+
+function goTab(name,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("on"));
+  if(btn)btn.classList.add("on");
+  render();
+}
+function goTabByName(name){const map={kasa:0,dokum:1,teslim:2,bitir:3,raporlar:4,pusula:5};goTab(name,document.querySelectorAll(".nav button")[map[name]||0])}
+function toast(main,sub,type="in"){
+  const t=document.getElementById("toast");t.innerHTML=`<b>${esc(main)}</b><div>${esc(sub||"")}</div>`;t.className="toast "+(type==="out"?"out":type==="transfer"?"transfer":"");t.classList.add("show");setTimeout(()=>{t.className="toast"},1300);
+}
+
+init();
+</script>
+</body>
+</html>
