@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
 <title>Hesap Asistanı V3</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#070d16;--panel:#111827;--panel2:#172033;--line:#293548;
@@ -146,6 +147,283 @@ button{cursor:pointer}
 .pusula-actions,.report-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.pusula-actions button,.report-actions button{min-height:46px;border:0;border-radius:14px;font-size:13px;font-weight:1000}
 .btn-green{background:linear-gradient(180deg,var(--green),var(--green2));color:white}.btn-blue{background:linear-gradient(180deg,var(--blue),var(--blue2));color:white}.btn-gold{background:linear-gradient(180deg,var(--gold),#b45309);color:#111827}.btn-red{background:rgba(239,68,68,.13);color:#fecaca;border:1px solid rgba(239,68,68,.35)!important}
 @media(max-height:720px){.key{height:48px}.big{height:48px}.display{height:72px}.typed{height:54px;font-size:30px}.kasa .val{font-size:32px}}
+
+/* KOCAN_SYSTEM_V1_CSS */
+.kocan-card{position:relative;overflow:hidden;border:1px solid rgba(148,163,184,.22);border-radius:24px;background:linear-gradient(145deg,rgba(15,23,42,.98),rgba(2,6,15,.94));box-shadow:0 18px 45px rgba(0,0,0,.28);padding:0;margin-bottom:14px}
+.kocan-cover{position:relative;padding:18px 18px 15px 78px;min-height:130px;background:linear-gradient(90deg,rgba(250,204,21,.22),rgba(15,23,42,.15));border-bottom:1px solid rgba(148,163,184,.16)}
+.kocan-cover:before{content:"";position:absolute;left:0;top:0;bottom:0;width:54px;background:repeating-linear-gradient(to bottom,rgba(250,204,21,.42) 0 9px,rgba(2,6,15,.55) 9px 18px);border-right:1px solid rgba(250,204,21,.25)}
+.kocan-cover:after{content:"KOÇAN";position:absolute;left:13px;top:33px;writing-mode:vertical-rl;letter-spacing:.25em;font-size:11px;font-weight:1000;color:rgba(255,255,255,.78)}
+.kocan-title{font-size:25px;font-weight:1000;color:#fff;line-height:1.05}
+.kocan-sub{margin-top:7px;color:var(--dim);font-size:12px;font-weight:900;letter-spacing:.04em}
+.kocan-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:13px 18px}
+.kocan-mini div{border:1px solid rgba(148,163,184,.16);border-radius:14px;background:rgba(2,6,15,.32);padding:9px 7px;text-align:center}
+.kocan-mini b{display:block;font-size:17px;color:#fff}.kocan-mini span{font-size:9px;color:var(--dim);font-weight:1000;letter-spacing:.12em}
+.kocan-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 18px 18px}
+.kocan-actions button{height:47px;border:0;border-radius:15px;font-size:14px;font-weight:1000}
+.kocan-detail-host{max-height:60vh;overflow:auto;background:rgba(2,6,15,.22);border:1px solid var(--line);border-radius:16px;padding:10px}
+.kocan-page-nav{display:grid;grid-template-columns:54px 1fr 54px;gap:8px;align-items:center;margin-bottom:10px}
+.kocan-page-nav button{height:42px;border:1px solid rgba(148,163,184,.25);border-radius:13px;background:rgba(15,23,42,.88);color:#fff;font-size:20px;font-weight:1000}
+.kocan-page-nav button:disabled{opacity:.3}.kocan-page-nav .mid{text-align:center;color:#fff;font-weight:1000}.kocan-page-nav .mid small{display:block;color:var(--dim);font-size:11px;margin-top:2px}
+.kocan-paper{position:relative;background:#f4efd8;color:#1f2937;border-radius:20px;padding:18px 14px 20px;box-shadow:0 18px 45px rgba(0,0,0,.42),inset 0 0 0 1px rgba(31,41,55,.15);overflow:hidden}
+.kocan-paper:before{content:"";position:absolute;left:0;right:0;top:0;height:42px;background:repeating-linear-gradient(90deg,rgba(31,41,55,.08) 0 1px,transparent 1px 72px),linear-gradient(#d7cf91,#ebe6bf);border-bottom:1px solid rgba(31,41,55,.12)}
+.kocan-paper:after{content:"";position:absolute;right:-34px;bottom:-34px;width:120px;height:120px;background:linear-gradient(135deg,rgba(255,255,255,.65),rgba(188,180,133,.18));transform:rotate(10deg);border-radius:18px;box-shadow:-8px -8px 22px rgba(0,0,0,.11)}
+.kocan-paper-head{position:relative;z-index:1;margin-top:36px;display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid rgba(31,41,55,.22);padding-bottom:10px}
+.kocan-paper-brand{font-size:12px;font-weight:1000;letter-spacing:.22em;color:#374151}.kocan-paper-title{text-align:right;font-size:24px;font-weight:1000;letter-spacing:.18em;line-height:1.02;color:#111827}
+.kocan-day-box{position:relative;z-index:1;margin:14px 0;border:1px solid rgba(31,41,55,.28);border-radius:17px;padding:12px;background:rgba(255,255,255,.25)}
+.kocan-day-box .date{font-size:22px;font-weight:1000;color:#1d4ed8}.kocan-day-box .meta{font-size:12px;color:#4b5563;font-weight:900;margin-top:3px}
+.kocan-trip{position:relative;z-index:1;border:1px solid rgba(31,41,55,.25);border-radius:16px;margin-top:12px;background:rgba(255,255,255,.32);overflow:hidden}
+.kocan-trip-head{display:flex;justify-content:space-between;gap:8px;padding:12px;background:rgba(31,41,55,.06);border-bottom:1px solid rgba(31,41,55,.18)}
+.kocan-trip-head b{font-size:15px}.kocan-trip-head span{font-size:12px;color:#374151;font-weight:900}
+.kocan-trip-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px}
+.kocan-trip-summary div{background:rgba(255,255,255,.42);border:1px solid rgba(31,41,55,.12);border-radius:11px;padding:7px;text-align:center}
+.kocan-trip-summary b{display:block;font-size:14px}.kocan-trip-summary span{font-size:9px;color:#4b5563;font-weight:1000}
+.kocan-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}.kocan-table th,.kocan-table td{border:1px solid rgba(31,41,55,.22);padding:7px 6px;text-align:left}.kocan-table th{background:rgba(31,41,55,.07);font-size:10px;letter-spacing:.08em}.kocan-table td:last-child,.kocan-table th:last-child{text-align:right}
+.kocan-empty{position:relative;z-index:1;border:2px dashed rgba(31,41,55,.28);border-radius:20px;padding:34px 10px;text-align:center;font-size:20px;font-weight:1000;color:#6b7280;margin-top:18px}
+
+
+.kocan-pusula-list{display:grid;gap:18px;margin-top:14px}
+.kocan-pusula-paper{margin-top:0}
+.kocan-pusula-paper .paper-inner{box-shadow:none}
+
+
+/* PUSULA_FONT_TUNE_V1 */
+:root{
+  --font-ui:'Inter',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-hand:'Caveat',cursive;
+}
+
+body,button,input,select,textarea{
+  font-family:var(--font-ui);
+}
+
+.paper .paper-brand,
+.paper .paper-title,
+.paper .paper-sub,
+.paper .paper-label,
+.paper .p-head b,
+.paper .p-head span,
+.paper .p-table thead th,
+.paper .p-sum .k,
+.paper .p-note,
+.paper .p-sign-box,
+.kocan-pusula-paper .paper-brand,
+.kocan-pusula-paper .paper-title,
+.kocan-pusula-paper .paper-sub,
+.kocan-pusula-paper .paper-label,
+.kocan-pusula-paper .p-head b,
+.kocan-pusula-paper .p-head span,
+.kocan-pusula-paper .p-table thead th,
+.kocan-pusula-paper .p-sum .k,
+.kocan-pusula-paper .p-note,
+.kocan-pusula-paper .p-sign-box{
+  font-family:var(--font-ui);
+}
+
+.paper .hand,
+.kocan-pusula-paper .hand{
+  font-family:var(--font-hand);
+  color:#1d4ed8;
+  font-size:24px;
+  line-height:1.1;
+  font-weight:700;
+  letter-spacing:.01em;
+}
+
+.paper .p-table tbody td:nth-child(2) b,
+.kocan-pusula-paper .p-table tbody td:nth-child(2) b{
+  font-family:var(--font-hand);
+  color:#1d4ed8;
+  font-size:24px;
+  line-height:1.05;
+  font-weight:700;
+  display:inline-block;
+}
+
+.paper .p-table tbody td:nth-child(2) small,
+.kocan-pusula-paper .p-table tbody td:nth-child(2) small{
+  display:block;
+  margin-top:2px;
+  font-family:var(--font-ui);
+  font-size:11px;
+  font-weight:800;
+  color:#6b7280;
+}
+
+.paper .p-table tbody td:nth-child(3),
+.paper .p-table tbody td:nth-child(4),
+.kocan-pusula-paper .p-table tbody td:nth-child(3),
+.kocan-pusula-paper .p-table tbody td:nth-child(4){
+  font-family:var(--font-hand);
+  color:#1d4ed8;
+  font-size:22px;
+  font-weight:700;
+}
+
+.paper .p-section.gider .p-table tbody td:nth-child(2) b,
+.paper .p-section.gider .p-table tbody td:nth-child(3),
+.paper .p-section.gider .p-table tbody td:nth-child(4),
+.kocan-pusula-paper .p-section.gider .p-table tbody td:nth-child(2) b,
+.kocan-pusula-paper .p-section.gider .p-table tbody td:nth-child(3),
+.kocan-pusula-paper .p-section.gider .p-table tbody td:nth-child(4){
+  color:#b91c1c;
+}
+
+.paper .p-section.donus .p-table tbody td:nth-child(2) b,
+.paper .p-section.donus .p-table tbody td:nth-child(3),
+.paper .p-section.donus .p-table tbody td:nth-child(4),
+.kocan-pusula-paper .p-section.donus .p-table tbody td:nth-child(2) b,
+.kocan-pusula-paper .p-section.donus .p-table tbody td:nth-child(3),
+.kocan-pusula-paper .p-section.donus .p-table tbody td:nth-child(4){
+  color:#166534;
+}
+
+.paper .p-section.teslim .p-table tbody td:nth-child(2) b,
+.paper .p-section.teslim .p-table tbody td:nth-child(3),
+.paper .p-section.teslim .p-table tbody td:nth-child(4),
+.kocan-pusula-paper .p-section.teslim .p-table tbody td:nth-child(2) b,
+.kocan-pusula-paper .p-section.teslim .p-table tbody td:nth-child(3),
+.kocan-pusula-paper .p-section.teslim .p-table tbody td:nth-child(4){
+  color:#0284c7;
+}
+
+
+/* KOCAN_BOOK_FULLSCREEN_V1 */
+#reportDetailBack.kocan-fullscreen{
+  align-items:stretch;
+  justify-content:stretch;
+  padding:0;
+  background:rgba(2,6,15,.94);
+  backdrop-filter:blur(10px);
+  z-index:9999;
+}
+#reportDetailBack.kocan-fullscreen .modal{
+  width:100vw;
+  max-width:none;
+  height:100vh;
+  max-height:none;
+  margin:0;
+  border-radius:0;
+  border:0;
+  background:linear-gradient(180deg,#07111f,#02060f);
+  display:flex;
+  flex-direction:column;
+  padding:20px 14px calc(14px + env(safe-area-inset-bottom));
+}
+#reportDetailBack.kocan-fullscreen .modal-title{
+  font-size:24px;
+  font-weight:1000;
+  color:#fff;
+}
+#reportDetailBack.kocan-fullscreen .modal-text{
+  font-size:13px;
+  color:var(--dim);
+  margin-bottom:10px;
+}
+#reportDetailBack.kocan-fullscreen .kocan-detail-host{
+  flex:1;
+  max-height:none;
+  overflow:auto;
+  background:rgba(8,15,30,.28);
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:28px;
+  padding:16px;
+}
+#reportDetailBack.kocan-fullscreen .modal-actions{
+  gap:10px;
+  padding-top:12px;
+}
+.kocan-topbar{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:10px;
+}
+.kocan-exit-top{
+  min-height:44px;
+  padding:0 16px;
+  border-radius:14px;
+  border:1px solid rgba(148,163,184,.24);
+  background:rgba(15,23,42,.92);
+  color:#fff;
+  font-size:13px;
+  font-weight:1000;
+}
+#reportDetailBack.kocan-fullscreen .kocan-page-nav{
+  position:sticky;
+  top:0;
+  z-index:4;
+  background:linear-gradient(180deg,rgba(2,6,15,.92),rgba(2,6,15,.65));
+  padding-bottom:10px;
+  border-radius:18px;
+}
+#reportDetailBack.kocan-fullscreen .kocan-page-nav .mid{
+  font-size:18px;
+}
+#reportDetailBack.kocan-fullscreen .kocan-page-nav .mid small{
+  font-size:13px;
+}
+#reportDetailBack.kocan-fullscreen .kocan-page-nav button{
+  height:54px;
+  font-size:28px;
+  border-radius:18px;
+}
+#reportDetailBack.kocan-fullscreen .kocan-paper{
+  position:relative;
+  max-width:920px;
+  margin:0 auto 34px;
+  background:#f4efd8;
+  border-radius:24px;
+  box-shadow:0 26px 60px rgba(0,0,0,.45), inset 0 0 0 1px rgba(31,41,55,.12);
+  overflow:visible;
+}
+#reportDetailBack.kocan-fullscreen .kocan-paper:after{
+  content:"";
+  position:absolute;
+  right:-56px;
+  top:36px;
+  bottom:28px;
+  width:104px;
+  background:linear-gradient(90deg,rgba(255,255,255,.68),rgba(201,201,201,.18));
+  border-top-right-radius:24px;
+  border-bottom-right-radius:24px;
+  transform:perspective(1200px) rotateY(-24deg);
+  transform-origin:left center;
+  box-shadow:18px 0 30px rgba(0,0,0,.15);
+  pointer-events:none;
+}
+#reportDetailBack.kocan-fullscreen .kocan-paper:before{
+  box-shadow:none;
+}
+#reportDetailBack.kocan-fullscreen .kocan-pusula-list{
+  display:grid;
+  gap:24px;
+}
+#reportDetailBack.kocan-fullscreen .kocan-empty{
+  min-height:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:1000;
+}
+@media (max-width:700px){
+  #reportDetailBack.kocan-fullscreen .modal{
+    padding:16px 10px calc(10px + env(safe-area-inset-bottom));
+  }
+  #reportDetailBack.kocan-fullscreen .kocan-detail-host{
+    padding:10px;
+    border-radius:22px;
+  }
+  #reportDetailBack.kocan-fullscreen .kocan-paper{
+    max-width:100%;
+  }
+  #reportDetailBack.kocan-fullscreen .kocan-paper:after{
+    right:-28px;
+    width:54px;
+    top:30px;
+    bottom:20px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -226,7 +504,7 @@ button{cursor:pointer}
 
   <main class="page" id="page-raporlar">
     <div class="wrap">
-      <div class="hero"><h1>Sefer Raporları</h1><div class="sub">Kapatılan seferlerin raporları burada saklanır.</div></div>
+      <div class="hero"><h1>Koçan Arşivi</h1><div class="sub">Seferler aylık koçanlara ve günlük defter sayfalarına işlenir.</div></div>
       <div id="reportsList"></div>
     </div>
   </main>
@@ -319,7 +597,7 @@ button{cursor:pointer}
   <div class="modal">
     <div class="modal-title" id="reportDetailTitle">Rapor</div>
     <div class="modal-text" id="reportDetailSub"></div>
-    <pre id="reportDetailText" style="white-space:pre-wrap;max-height:55vh;overflow:auto;background:rgba(2,6,15,.28);border:1px solid var(--line);border-radius:14px;padding:10px"></pre>
+    <div id="reportDetailText" class="kocan-detail-host"></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeReportDetail()">Kapat</button>
       <button class="btn-confirm" onclick="copyOpenReportText()">Kopyala</button>
@@ -345,7 +623,9 @@ const STORE={
   routes:"hesap_asistani_v3_routes",
   inCats:"hesap_asistani_v3_in_categories",
   outCats:"hesap_asistani_v3_out_categories",
-  reports:"hesap_asistani_v3_reports"
+  reports:"hesap_asistani_v3_reports",
+  kocans:"hesap_asistani_v3_kocans",
+  kocanTrash:"hesap_asistani_v3_deleted_kocans"
 };
 const ROLES=["Muavin","1. Şoför","2. Şoför"];
 const ROUTE_ADD="__add_route__";
@@ -629,23 +909,412 @@ function makeReport(snapshot){
 }
 function finishTrip(){
   if(positives().length||negatives().length)return toast("⚠️ KAPANMAZ","Önce kalan para / eksi kasa çözülmeli","out");
-  const reports=readList(STORE.reports),snap=JSON.parse(JSON.stringify(state));
-  reports.unshift(makeReport(snap));writeList(STORE.reports,reports.slice(0,50));
-  state=defaultState();typed="";transferTyped="";saveState();init();toast("✅ SEFER KAPANDI","Rapor arşive eklendi","in");
+  const snap=JSON.parse(JSON.stringify(state));
+  saveSnapshotToKocan(snap);
+  state=defaultState();typed="";transferTyped="";saveState();init();toast("✅ SEFER KOÇANA İŞLENDİ","Aylık koçan sayfasına kaydedildi","in");
+}
+function kocanKey(){return STORE.kocans||"hesap_asistani_v3_kocans"}
+function kocanTrashKey(){return STORE.kocanTrash||"hesap_asistani_v3_deleted_kocans"}
+function kpad(n){return String(n).padStart(2,"0")}
+function monthNameTR(y,m){return new Date(Number(y),Number(m)-1,1).toLocaleDateString("tr-TR",{month:"long",year:"numeric"})}
+function daysInMonth(y,m){return new Date(Number(y),Number(m),0).getDate()}
+function parseYMD(v){
+  const s=String(v||today());
+  let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return{year:Number(m[1]),month:Number(m[2]),day:Number(m[3]),date:`${m[1]}-${m[2]}-${m[3]}`};
+  m=s.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+  if(m)return{year:Number(m[3]),month:Number(m[2]),day:Number(m[1]),date:`${m[3]}-${m[2]}-${m[1]}`};
+  const d=new Date();
+  return{year:d.getFullYear(),month:d.getMonth()+1,day:d.getDate(),date:today()};
+}
+function kocanId(y,m){return`KOCAN-${y}-${kpad(m)}`}
+function emptyKocan(y,m){
+  const totalPages=daysInMonth(y,m);
+  return{
+    id:kocanId(y,m),
+    year:Number(y),
+    month:Number(m),
+    monthName:monthNameTR(y,m),
+    totalPages,
+    createdAt:new Date().toLocaleString("tr-TR"),
+    updatedAt:new Date().toLocaleString("tr-TR"),
+    pages:Array.from({length:totalPages},(_,i)=>({day:i+1,date:`${y}-${kpad(m)}-${kpad(i+1)}`,trips:[]}))
+  };
+}
+function getKocans(){return readList(kocanKey())}
+function saveKocans(list){writeList(kocanKey(),(list||[]).sort((a,b)=>String(b.id).localeCompare(String(a.id))))}
+function tripTotalsFromSnapshot(snapshot){
+  const moves=snapshot.moves||[];
+  const activeCash=moves.filter(m=>m.kind==="cash"&&!m.corrected&&!m.correctionOf);
+  const activeTransfers=moves.filter(m=>(m.kind==="transfer"||m.kind==="owner_delivery")&&!m.corrected&&!m.correctionOf);
+  const girdi=activeCash.filter(m=>m.dir==="in").reduce((s,m)=>s+Number(m.amount||0),0);
+  const cikti=activeCash.filter(m=>m.dir==="out").reduce((s,m)=>s+Number(m.amount||0),0);
+  const teslim=activeTransfers.reduce((s,m)=>s+Number(m.amount||0),0);
+  const net=ROLES.reduce((s,r)=>s+Number((snapshot.balances||{})[r]||0),0);
+  return{girdi,cikti,teslim,net};
+}
+function saveSnapshotToKocan(snapshot){
+  const d=parseYMD(snapshot.date||today());
+  const list=getKocans();
+  let k=list.find(x=>x.id===kocanId(d.year,d.month));
+  if(!k){
+    k=emptyKocan(d.year,d.month);
+    list.unshift(k);
+  }
+  if(!Array.isArray(k.pages)||k.pages.length!==daysInMonth(d.year,d.month)){
+    k.pages=emptyKocan(d.year,d.month).pages.map((p,i)=>({...p,...((k.pages||[])[i]||{}),trips:Array.isArray(((k.pages||[])[i]||{}).trips)?((k.pages||[])[i]||{}).trips:[]}));
+    k.totalPages=k.pages.length;
+  }
+  const page=k.pages[d.day-1]||{day:d.day,date:d.date,trips:[]};
+  const report=makeReport(snapshot);
+  page.trips=Array.isArray(page.trips)?page.trips:[];
+  page.trips.push({
+    id:report.id,
+    trip:snapshot.trip||"Sefer",
+    date:snapshot.date||d.date,
+    time:snapshot.time||currentTime(),
+    plate:snapshot.plate||"-",
+    staff:snapshot.staff||{},
+    balances:snapshot.balances||{},
+    moves:snapshot.moves||[],
+    totals:tripTotalsFromSnapshot(snapshot),
+    reportText:report.text,
+    createdAt:report.createdAt
+  });
+  k.pages[d.day-1]=page;
+  k.updatedAt=new Date().toLocaleString("tr-TR");
+  saveKocans(list);
+  return k;
+}
+function migrateLegacyReportsToKocans(){
+  const legacy=readList(STORE.reports||"hesap_asistani_v3_reports");
+  if(!legacy.length)return;
+  const list=getKocans();
+  const used=new Set();
+  list.forEach(k=>(k.pages||[]).forEach(p=>(p.trips||[]).forEach(t=>{if(t.legacyReportId)used.add(String(t.legacyReportId))})));
+  legacy.forEach(r=>{
+    if(used.has(String(r.id)))return;
+    const d=parseYMD(r.createdAt||today());
+    let k=list.find(x=>x.id===kocanId(d.year,d.month));
+    if(!k){k=emptyKocan(d.year,d.month);list.unshift(k)}
+    const page=k.pages[d.day-1]||{day:d.day,date:d.date,trips:[]};
+    page.trips=Array.isArray(page.trips)?page.trips:[];
+    page.trips.push({
+      id:r.id||Date.now(),
+      legacyReportId:r.id,
+      trip:String(r.title||"Sefer").replace(/\s+Raporu$/,""),
+      date:d.date,
+      time:"-",
+      plate:r.plate||"-",
+      staff:{},
+      balances:{},
+      moves:[],
+      totals:{girdi:Number(r.total||0),cikti:0,teslim:0,net:Number(r.total||0)},
+      reportText:r.text||"",
+      createdAt:r.createdAt||""
+    });
+    k.pages[d.day-1]=page;
+    k.updatedAt=new Date().toLocaleString("tr-TR");
+  });
+  saveKocans(list);
+}
+function kocanStats(k){
+  const pages=k.pages||[];
+  let trips=0,girdi=0,cikti=0,teslim=0,net=0,dolu=0;
+  pages.forEach(p=>{
+    const arr=p.trips||[];
+    if(arr.length)dolu++;
+    trips+=arr.length;
+    arr.forEach(t=>{
+      girdi+=Number((t.totals||{}).girdi||0);
+      cikti+=Number((t.totals||{}).cikti||0);
+      teslim+=Number((t.totals||{}).teslim||0);
+      net+=Number((t.totals||{}).net||0);
+    });
+  });
+  return{trips,girdi,cikti,teslim,net,dolu};
 }
 function renderReports(){
-  const box=document.getElementById("reportsList"),reports=readList(STORE.reports);
-  if(!reports.length){box.innerHTML=`<div class="empty">Henüz kapanış raporu yok</div>`;return}
-  box.innerHTML=reports.map(r=>`<div class="card"><div class="move-row"><div><b>${esc(r.title)}</b><div class="meta">${esc(r.createdAt)} • Plaka: ${esc(r.plate)}</div></div><div class="amount plus">${signed(r.total||0)}</div></div><div class="report-actions"><button class="btn-blue" onclick="openReportDetail(${Number(r.id)})">Detay</button><button class="btn-gold" onclick="copyReport(${Number(r.id)})">Kopyala</button><button class="btn-green" onclick="sendReportWhatsApp(${Number(r.id)})">WhatsApp</button><button class="btn-red" onclick="deleteReport(${Number(r.id)})">Sil</button></div></div>`).join("");
+  migrateLegacyReportsToKocans();
+
+  const h=document.querySelector("#page-raporlar .hero h1");
+  const s=document.querySelector("#page-raporlar .hero .sub");
+  if(h)h.textContent="Koçan Arşivi";
+  if(s)s.textContent="Seferler artık aylık koçanlara ve günlük defter sayfalarına işlenir.";
+
+  const box=document.getElementById("reportsList"), kocans=getKocans();
+  const trash=readList(kocanTrashKey());
+  const trashInfo=trash.length?`<div class="empty">Silinen koçan izi: ${trash.length} kayıt arka arşivde saklanıyor.</div>`:"";
+
+  if(!kocans.length){
+    box.innerHTML=`<div class="empty">Henüz koçan yok. Sefer kapatıldığında ilgili ay koçanı otomatik oluşur.</div>${trashInfo}`;
+    return;
+  }
+
+  box.innerHTML=kocans.map(k=>{
+    const st=kocanStats(k);
+    return`
+      <div class="kocan-card">
+        <div class="kocan-cover">
+          <div class="kocan-title">${esc((k.monthName||"").toLocaleUpperCase("tr-TR"))} KOÇANI</div>
+          <div class="kocan-sub">${k.totalPages||0} sayfa • ${st.dolu} dolu gün • ${st.trips} sefer</div>
+        </div>
+        <div class="kocan-mini">
+          <div><b>${st.dolu}/${k.totalPages||0}</b><span>SAYFA</span></div>
+          <div><b>${fmt(st.girdi)}</b><span>GİRDİ</span></div>
+          <div><b>${signed(st.net)}</b><span>NET</span></div>
+        </div>
+        <div class="kocan-actions">
+          <button class="btn-blue" onclick="openKocan('${k.id}')">Aç</button>
+          <button class="btn-gold" onclick="copyReport('${k.id}')">Kopyala</button>
+          <button class="btn-green" onclick="sendReportWhatsApp('${k.id}')">WhatsApp</button>
+          <button class="btn-red" onclick="deleteReport('${k.id}')">Sil</button>
+        </div>
+      </div>`;
+  }).join("")+trashInfo;
 }
-function getReport(id){return readList(STORE.reports).find(r=>Number(r.id)===Number(id))}
-function openReportDetail(id){const r=getReport(id);if(!r)return;openReportId=id;document.getElementById("reportDetailTitle").textContent=r.title;document.getElementById("reportDetailSub").textContent=r.createdAt;document.getElementById("reportDetailText").textContent=r.text;document.getElementById("reportDetailBack").classList.add("show")}
-function closeReportDetail(){openReportId=null;document.getElementById("reportDetailBack").classList.remove("show")}
+function getKocan(id){return getKocans().find(k=>String(k.id)===String(id))}
+
+function archivedTripGroups(trip){
+  const g={hesap:[],emanet:[],donus:[],gider:[],teslim:[]};
+  const moves=(trip.moves||[]).slice().filter(m=>!m.corrected&&!m.correctionOf);
+
+  moves.forEach(m=>{
+    if(m.kind==="cash"){
+      const type=m.dir==="out"?"gider":(m.pusulaType||inferInType(m.label));
+      if(g[type]) g[type].push(m);
+      else g.hesap.push(m);
+    }else if(m.kind==="transfer"||m.kind==="owner_delivery"){
+      g.teslim.push(m);
+    }
+  });
+  return g;
+}
+
+function archivedSum(list){
+  return (list||[]).reduce((a,m)=>a+Number(m.amount||0),0);
+}
+
+function archivedRows(list,type){
+  if(!(list||[]).length){
+    return `<tr><td colspan="4"><div class="p-empty">Bu bölümde kayıt yok</div></td></tr>`;
+  }
+  return list.map((m,i)=>{
+    let main="",sub="";
+    if(type==="teslim"){
+      main = m.kind==="owner_delivery" ? "Patrona Teslim" : `${m.from||""} → ${m.to||""}`;
+      sub = m.fromName || m.toName || "";
+    }else{
+      main = m.label||"-";
+      sub = m.holderName||"";
+    }
+    const tutar = (m.dir==="out"||type==="gider") ? `-${fmt(m.amount)}` : `${fmt(m.amount)}`;
+    return `<tr>
+      <td>${i+1}</td>
+      <td><b>${esc(main)}</b><br><small>${esc(sub)}</small></td>
+      <td>${esc(m.time||"-")}</td>
+      <td>${tutar}</td>
+    </tr>`;
+  }).join("");
+}
+
+function archivedSection(title,list,type,totalText){
+  return `<div class="p-section ${type}">
+    <div class="p-head"><b>${title}</b><span>${totalText}</span></div>
+    <table class="p-table">
+      <thead><tr><th>No</th><th>Mahiyet</th><th>Saat</th><th>Tutar</th></tr></thead>
+      <tbody>${archivedRows(list,type)}</tbody>
+    </table>
+  </div>`;
+}
+
+function archivedPusulaHtml(trip, idx, page){
+  const g=archivedTripGroups(trip);
+  const hesap=archivedSum(g.hesap);
+  const emanet=archivedSum(g.emanet);
+  const donus=archivedSum(g.donus);
+  const gider=archivedSum(g.gider);
+  const teslim=archivedSum(g.teslim);
+  const net=Number(((trip.totals||{}).net)||0);
+
+  return `
+  <div class="paper kocan-pusula-paper">
+    <div class="paper-inner">
+      <div class="paper-head">
+        <div>
+          <div class="paper-brand">HESAP ASİSTANI V3</div>
+          <div class="paper-no">Koçan: <span class="hand">${esc(page.date||"")}</span></div>
+        </div>
+        <div>
+          <div class="paper-title">HESAP<br>PUSULASI</div>
+          <div class="paper-sub">Koçan sayfası sefer kaydı</div>
+        </div>
+      </div>
+
+      <div class="paper-info">
+        <div class="paper-line"><div class="paper-label">SEFER</div><div class="hand">${esc(trip.trip||"-")}</div></div>
+        <div class="paper-line"><div class="paper-label">TARİH</div><div class="hand">${esc((trip.date||page.date||"").split("-").reverse().join("."))}</div></div>
+        <div class="paper-line"><div class="paper-label">SAAT</div><div class="hand">${esc(trip.time||"-")}</div></div>
+        <div class="paper-line"><div class="paper-label">PLAKA</div><div class="hand">${esc(trip.plate||"-")}</div></div>
+        <div class="paper-line"><div class="paper-label">MUAVİN</div><div class="hand">${esc((trip.staff||{})["Muavin"]||"-")}</div></div>
+        <div class="paper-line"><div class="paper-label">1. ŞOFÖR</div><div class="hand">${esc((trip.staff||{})["1. Şoför"]||"-")}</div></div>
+        <div class="paper-line"><div class="paper-label">2. ŞOFÖR</div><div class="hand">${esc((trip.staff||{})["2. Şoför"]||"-")}</div></div>
+      </div>
+
+      ${archivedSection("HESAPLAR / GARAJ",g.hesap,"hesap",fmt(hesap))}
+      ${archivedSection("EMANETLER",g.emanet,"emanet",fmt(emanet))}
+      ${archivedSection("DÖNÜŞLER",g.donus,"donus",fmt(donus))}
+      ${archivedSection("GİDERLER / ÇIKIŞLAR",g.gider,"gider","-"+fmt(gider))}
+      ${archivedSection("TESLİMLER",g.teslim,"teslim",fmt(teslim))}
+
+      <div class="p-summary">
+        <div class="p-sum"><div class="k">TOPLAM GİRDİ</div><div class="v">${fmt(hesap+emanet)}</div></div>
+        <div class="p-sum"><div class="k">TOPLAM DÖNÜŞ</div><div class="v">${fmt(donus)}</div></div>
+        <div class="p-sum"><div class="k">TOPLAM ÇIKIŞ</div><div class="v" style="color:#b91c1c">-${fmt(gider)}</div></div>
+        <div class="p-sum"><div class="k">TESLİM</div><div class="v" style="color:#0284c7">${fmt(teslim)}</div></div>
+        <div class="p-sum" style="grid-column:1/-1"><div class="k">NET KASA</div><div class="v" style="color:#166534">${signed(net)}</div></div>
+      </div>
+
+      <div class="p-note">Bu pusula koçan arşivindeki kayıtlı seferin görünümüdür.</div>
+      <div class="p-sign"><div class="p-sign-box">Teslim Eden</div><div class="p-sign-box">Teslim Alan / Patron</div></div>
+    </div>
+  </div>`;
+}
+
+function kocanTripRows(trip,kind){
+  const moves=(trip.moves||[]).filter(m=>m.kind==="cash"&&!m.corrected&&!m.correctionOf);
+  let list=[];
+  if(kind==="gider")list=moves.filter(m=>m.dir==="out");
+  else list=moves.filter(m=>m.dir==="in"&&(m.pusulaType||inferInType(m.label))===kind);
+  if(!list.length)return`<tr><td colspan="3">Kayıt yok</td></tr>`;
+  return list.map(m=>`<tr><td>${esc(m.label||"-")}<br><small>${esc(m.holderName||"")}</small></td><td>${esc(m.time||"-")}</td><td>${m.dir==="out"?"-":"+"}${fmt(m.amount)}</td></tr>`).join("");
+}
+function kocanTripHtml(t,idx){
+  const totals=t.totals||{};
+  return`
+    <div class="kocan-trip">
+      <div class="kocan-trip-head">
+        <div><b>${idx}. ${esc(t.trip||"Sefer")}</b><br><span>${esc(t.plate||"-")} • ${esc(t.time||"-")}</span></div>
+        <div><b>${signed(totals.net||0)}</b><br><span>Net</span></div>
+      </div>
+      <div class="kocan-trip-summary">
+        <div><b>${fmt(totals.girdi||0)}</b><span>GİRDİ</span></div>
+        <div><b>-${fmt(totals.cikti||0)}</b><span>ÇIKIŞ</span></div>
+        <div><b>${fmt(totals.teslim||0)}</b><span>TESLİM</span></div>
+      </div>
+      <table class="kocan-table">
+        <thead><tr><th>Mahiyet</th><th>Saat</th><th>Tutar</th></tr></thead>
+        <tbody>
+          ${kocanTripRows(t,"hesap")}
+          ${kocanTripRows(t,"emanet")}
+          ${kocanTripRows(t,"donus")}
+          ${kocanTripRows(t,"gider")}
+        </tbody>
+      </table>
+    </div>`;
+}
+function kocanPageHtml(k,pageNo){
+  const page=(k.pages||[])[pageNo-1]||{day:pageNo,date:"",trips:[]};
+  const trips=page.trips||[];
+  return`
+    <div class="kocan-topbar"><button class="kocan-exit-top" onclick="closeReportDetail()">Tam ekrandan çık</button></div><div class="kocan-page-nav">
+      <button ${pageNo<=1?"disabled":""} onclick="openKocan('${k.id}',${pageNo-1})">‹</button>
+      <div class="mid">Sayfa ${pageNo} / ${k.totalPages}<small>${esc(k.monthName||"Koçan")}</small></div>
+      <button ${pageNo>=k.totalPages?"disabled":""} onclick="openKocan('${k.id}',${pageNo+1})">›</button>
+    </div>
+    <div class="kocan-paper">
+      <div class="kocan-paper-head">
+        <div>
+          <div class="kocan-paper-brand">HESAP ASİSTANI V3</div>
+          <div style="font-weight:1000;margin-top:7px">Koçan No: ${esc(k.id)}</div>
+        </div>
+        <div class="kocan-paper-title">HESAP<br>KOÇANI</div>
+      </div>
+      <div class="kocan-day-box">
+        <div class="date">${kpad(page.day)}. Gün</div>
+        <div class="meta">${esc(page.date||"")} • ${trips.length} sefer kaydı</div>
+      </div>
+      ${trips.length
+        ? `<div class="kocan-pusula-list">` + trips.map((t,i)=>archivedPusulaHtml(t,i+1,page)).join("") + `</div>`
+        : `<div class="kocan-empty">Bu sayfada kayıt yok</div>`}
+    </div>`;
+}
+let openKocanId=null, openKocanPage=1;
+function firstFilledPage(k){
+  const pages=k.pages||[];
+  const idx=pages.findIndex(p=>Array.isArray(p.trips)&&p.trips.length>0);
+  return idx>=0 ? idx+1 : 1;
+}
+function openKocan(id,pageNo){
+  const k=getKocan(id);if(!k)return;
+  openKocanId=id;
+  if(pageNo===undefined || pageNo===null){
+    pageNo=firstFilledPage(k);
+  }
+  openKocanPage=Math.min(Math.max(Number(pageNo)||1,1),Number(k.totalPages||1));
+  document.getElementById("reportDetailTitle").textContent=(k.monthName||"Koçan")+" Koçanı";
+  document.getElementById("reportDetailSub").textContent=(k.totalPages||0)+" sayfa • Günlük defter görünümü";
+  document.getElementById("reportDetailText").innerHTML=kocanPageHtml(k,openKocanPage);
+  const back=document.getElementById("reportDetailBack");back.classList.add("show","kocan-fullscreen");document.body.style.overflow="hidden";
+}
+function getReport(id){return getKocan(id)}
+function openReportDetail(id){openKocan(id,1)}
+function closeReportDetail(){openKocanId=null;const back=document.getElementById("reportDetailBack");back.classList.remove("show","kocan-fullscreen");document.body.style.overflow="";}
 function copyText(txt){navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(txt):null}
-function copyReport(id){const r=getReport(id);if(r){copyText(r.text);toast("✅ KOPYALANDI","Rapor metni panoya alındı","in")}}
-function copyOpenReportText(){if(openReportId)copyReport(openReportId)}
-function sendReportWhatsApp(id){const r=getReport(id);if(r)window.open("https://wa.me/?text="+encodeURIComponent(r.text),"_blank")}
-function deleteReport(id){writeList(STORE.reports,readList(STORE.reports).filter(r=>Number(r.id)!==Number(id)));renderReports();toast("🗑️ SİLİNDİ","Rapor kaldırıldı","out")}
+function kocanText(id){
+  const k=getKocan(id);if(!k)return"";
+  const st=kocanStats(k);
+  const lines=[
+    "HESAP ASİSTANI V3 - AYLIK KOÇAN",
+    "--------------------------------",
+    `Koçan: ${k.monthName}`,
+    `Koçan No: ${k.id}`,
+    `Sayfa: ${k.totalPages}`,
+    `Dolu Gün: ${st.dolu}`,
+    `Sefer: ${st.trips}`,
+    "",
+    `Toplam Girdi: +${fmt(st.girdi)}`,
+    `Toplam Çıktı: -${fmt(st.cikti)}`,
+    `Toplam Teslim: ${fmt(st.teslim)}`,
+    `Net: ${signed(st.net)}`,
+    ""
+  ];
+  (k.pages||[]).forEach(p=>{
+    lines.push(`SAYFA ${p.day}/${k.totalPages} - ${p.date}`);
+    if(!(p.trips||[]).length){
+      lines.push("  Bu sayfada kayıt yok.");
+    }else{
+      (p.trips||[]).forEach((t,i)=>{
+        const tt=t.totals||{};
+        lines.push(`  ${i+1}) ${t.trip} | ${t.plate} | ${t.time} | Girdi ${fmt(tt.girdi)} | Çıktı ${fmt(tt.cikti)} | Net ${signed(tt.net)}`);
+      });
+    }
+    lines.push("");
+  });
+  lines.push("Not: Koçan silinse bile iz kaydı arka arşivde saklanır.");
+  return lines.join("\n");
+}
+function copyReport(id){const txt=kocanText(id);if(txt){copyText(txt);toast("✅ KOPYALANDI","Koçan metni panoya alındı","in")}}
+function copyOpenReportText(){if(openKocanId)copyReport(openKocanId)}
+function sendReportWhatsApp(id){const txt=kocanText(id);if(txt)window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank")}
+function deleteReport(id){
+  const list=getKocans();
+  let deleted=null;
+  const kept=[];
+  list.forEach(k=>{
+    if(!deleted&&String(k.id)===String(id))deleted={...k,deletedAt:new Date().toLocaleString("tr-TR"),deleteMode:"kocan_visible_removed"};
+    else kept.push(k);
+  });
+  if(!deleted)return;
+  const ok=window.confirm?window.confirm("Bu koçan görünür listeden kaldırılacak. İz kaydı arka arşivde saklanacak. Devam edilsin mi?"):true;
+  if(!ok)return;
+  const trash=readList(kocanTrashKey());
+  trash.unshift(deleted);
+  saveKocans(kept);
+  writeList(kocanTrashKey(),trash.slice(0,60));
+  renderReports();
+  toast("🗂️ KOÇAN KALDIRILDI","Silindi izi arka arşivde saklandı","transfer");
+}
 function openReportsFromSetup(){document.getElementById("setup").classList.add("hide");goTabByName("raporlar")}
 
 function ensurePusulaNo(){if(!state.pusulaNo){const d=new Date();state.pusulaNo="HP-"+String(d.getFullYear()).slice(-2)+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(Math.floor(Math.random()*900)+100);saveState()}return state.pusulaNo}
@@ -751,7 +1420,7 @@ init();
     return String(n).padStart(2, "0");
   }
 
-  function today(){
+  function setupFixToday(){
     const d = new Date();
     return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
   }
@@ -815,7 +1484,7 @@ init();
     }
 
     if(date && !date.value){
-      date.value = today();
+      date.value = setupFixToday();
       fire(date);
     }
 
@@ -827,7 +1496,7 @@ init();
     try{
       if(typeof state !== "undefined" && state){
         state.trip = route && route.value ? route.value : DEF_ROUTE;
-        state.date = date && date.value ? date.value : today();
+        state.date = date && date.value ? date.value : setupFixToday();
         state.time = time && time.value ? time.value : nowTime();
 
         if(typeof saveState === "function"){

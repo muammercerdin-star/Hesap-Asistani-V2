@@ -39,3 +39,9 @@ __pycache__/
 # Geçici dosyalar
 .tmp/
 temp/
+
+# Hesap Asistani local backups / temp
+*.bak*
+tools/_hesap_v3_extracted.js
+__pycache__/
+*.pyc
